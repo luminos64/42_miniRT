@@ -1,0 +1,2 @@
+# 42_miniRT
+Raytracing.
