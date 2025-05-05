@@ -6,7 +6,7 @@
 /*   By: usoontra <usoontra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:36:48 by usoontra          #+#    #+#             */
-/*   Updated: 2025/05/05 18:37:41 by usoontra         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:48:35 by usoontra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,14 +300,14 @@ int	main(void)
 	id.mlx = mlx_init(WINX, WINY, "miniRT", false); // true => can resize
 	if (!id.mlx)
 		return (EXIT_FAILURE);
-	// id.img = NULL;
-	// id.img = mlx_new_image(id.mlx, WINX, WINY);
-	// if (!id.img)
-	// 	return (EXIT_FAILURE);
-	// render(&id);
-	// if (mlx_image_to_window(id.mlx, id.img, 0, 0) < 0)
-	// 	return (EXIT_FAILURE);	// render(&id);
-	// // mlx_loop_hook(id.mlx, &render, &id);
+	id.img = NULL;
+	id.img = mlx_new_image(id.mlx, WINX, WINY);
+	if (!id.img)
+		return (EXIT_FAILURE);
+	render(&id);
+	if (mlx_image_to_window(id.mlx, id.img, 0, 0) < 0)
+		return (EXIT_FAILURE);	// render(&id);
+	// mlx_loop_hook(id.mlx, &render, &id);
 	mlx_key_hook(id.mlx, &hook, &id);
 	mlx_loop(id.mlx);
 	mlx_terminate(id.mlx);
