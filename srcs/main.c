@@ -6,7 +6,7 @@
 /*   By: usoontra <usoontra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:36:48 by usoontra          #+#    #+#             */
-/*   Updated: 2025/05/05 23:48:35 by usoontra         ###   ########.fr       */
+/*   Updated: 2025/05/06 01:07:01 by usoontra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,21 @@ int	ray_intersect(t_vector origin, t_vector direction, t_sphere *shape, float *t
 
 	oc = vector_sub(origin, shape->origin);
 	temp.x = vector_dot(direction, direction);
-	temp.y = 2.0 * vector_dot(oc, direction);
+	temp.y = 2.0f * vector_dot(oc, direction);
 	temp.z = vector_dot(oc, oc) - (shape->radius * shape->radius);
 	discriminant = (temp.y * temp.y) - (4 * temp.x * temp.z);
 	if (discriminant < 0)
 		return (0);
 	temp.z = sqrtf(discriminant);
-	t0 = (-temp.y - temp.z) / (2.0 * temp.x);
-	t1 = (-temp.y + temp.z) / (2.0 * temp.x);
-	if (t0 > 0)
+	t0 = (-temp.y - temp.z) / (2.0f * temp.x);
+	t1 = (-temp.y + temp.z) / (2.0f * temp.x);
+	// เลือกค่า t ที่เป็นบวกและมากกว่าเล็กน้อย (หลีกเลี่ยง self-intersection)
+	if (t0 > 0.001f)
 	{
 		*t = t0;
 		return (1);
 	}
-	if (t1 > 0)
+	if (t1 > 0.001f)
 	{
 		*t = t1;
 		return (1);
@@ -48,25 +49,28 @@ int	ray_intersect(t_vector origin, t_vector direction, t_sphere *shape, float *t
 	return (0);
 }
 
-bool	in_shadow(t_data *id, t_vector hit, t_light *light)
+bool	in_shadow(t_data *id, t_vector hit, t_vector normal, t_light *light)
 {
 	float		max_distance;
-	t_vector	directtion;////////
+	float		t;
+	t_vector	direction;////////
+	t_vector	shadow;
 	t_sphere	*shape;
 
-	// max_distance = vec3_length(vector_sub(light->origin, hit));
+	shadow = vector_add(hit, vector_mul(normal, 0.001f));
+	direction = vector_sub(light->origin, shadow); // หาทิศทางจาก point1 ไป point2
 	// ตรวจสอบชนวัตถุแค่ระหว่างจุดกับแสง
-	directtion = vector_normalize(vector_sub(hit, light->origin)); // หาทิศทางจาก point1 ไป point2
+	max_distance = vec3_length(direction);
+	direction = vector_normalize(direction);
 	shape = id->shape;
 	while (shape)
 	{
 		if (shape->type == 0)
 		{
-			// printf("fffff\n");
-			if (ray_intersect(hit, directtion, shape, &max_distance))
+			if (ray_intersect(shadow, direction, shape, &t))
 			{
-				printf("aaaaaaa\n");
-				return (true);
+				if (t < max_distance)
+					return (true);
 			}
 			// return (ray_intersect(light->origin, hit, shape, &max_distance));
 		}
@@ -98,7 +102,7 @@ t_vector	specular(t_data *id, t_light *light, t_vector hit, t_vector color)
 	return (color);
 }
 
-t_color	light_cal(t_data *id, t_vector hit, t_vector s_color)
+t_color	light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color)
 {
 	t_light		*temp;
 	t_vector	light;
@@ -110,13 +114,13 @@ t_color	light_cal(t_data *id, t_vector hit, t_vector s_color)
 	temp = id->light;
 	while (temp)
 	{
-		light = vector_normalize(vector_sub(temp->origin, hit)); // diffuse light
-		if (!in_shadow(id, hit, temp))
+		light = vector_normalize(vector_sub(temp->origin, normal)); // diffuse light
+		if (!in_shadow(id, hit, normal, temp))
 		{
-			diffuse = fmaxf(0.0f, vector_dot(hit, light));
+			diffuse = fmaxf(0.0f, vector_dot(normal, light));
 			light = vector_mul(temp->color, diffuse);
 			final_color_v = vector_add(final_color_v, color_mul(s_color, light));
-			final_color_v = specular(id, temp, hit, final_color_v);
+			final_color_v = specular(id, temp, normal, final_color_v);
 		}
 		temp = temp->next;
 	}
@@ -132,6 +136,7 @@ t_color	trace_ray(t_data *id, t_camera *camera, t_vector direction)
 	float		t;
 	float		max;
 	t_vector	hit;
+	t_vector	normal;
 	t_color		color;
 	t_sphere	*sphere;
 
@@ -146,8 +151,8 @@ t_color	trace_ray(t_data *id, t_camera *camera, t_vector direction)
 				printf("t < max\n");
 				max = t;
 				hit = vector_add(camera->origin, vector_mul(direction, t));
-				hit = vector_normalize(vector_sub(hit, sphere->origin));
-				color = light_cal(id, hit, sphere->color);
+				normal = vector_normalize(vector_sub(hit, sphere->origin));
+				color = light_cal(id, hit, normal, sphere->color);
 				return (color);
 			}
 		}
@@ -194,9 +199,9 @@ int	get_thing(t_data *id)
 	light1 = malloc(sizeof(t_light));
 	if (!light1)
 		return (EXIT_FAILURE);
-	light1->origin.x = -1;
+	light1->origin.x = -50;
 	light1->origin.y = 0;
-	light1->origin.z = -1;
+	light1->origin.z = 20;
 	light1->bright = 1;
 	light1->color.x = 255 / 255.0f * light1->bright;
 	light1->color.y = 255 / 255.0f * light1->bright;
@@ -210,7 +215,7 @@ int	get_thing(t_data *id)
 	light2->origin.x = -1;
 	light2->origin.y = -1;
 	light2->origin.z = -1;
-	light2->bright = 0.7;
+	light2->bright = 1;
 	light2->color.x = 255 / 255.0f * light2->bright;
 	light2->color.y = 255 / 255.0f * light2->bright;
 	light2->color.z = 255 / 255.0f * light2->bright;
