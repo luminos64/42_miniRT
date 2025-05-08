@@ -11,7 +11,7 @@ SRC_DIR	= srcs
 
 INC_DIR	= includes
 
-SOURCE	= main.c vector.c key_hook.c utils.c
+SOURCE	= main.c vector.c key_hook.c utils.c sphere.c light.c plane.c
 
 LIB_FT	= ./lib/libft
 

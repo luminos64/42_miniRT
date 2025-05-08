@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   miniRT.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: usoontra <usoontra@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 19:37:23 by usoontra          #+#    #+#             */
-/*   Updated: 2025/05/05 00:45:02 by usoontra         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
@@ -28,6 +17,10 @@
 # define Z 2
 
 # define PI 3.14159
+
+# define SPHERE 0
+# define PLANE 1
+# define CYLINDER 2
 
 typedef struct s_vector
 {
@@ -67,16 +60,16 @@ typedef struct s_light
 
 typedef struct s_sphere
 {
-	struct s_sphere	*next;
-	int				type;
-	t_vector		origin;
-	float			radius;
-	t_vector		color; // r, g, b [0, 255]
+	void		*next;
+	int			type;
+	t_vector	origin;
+	float		radius;
+	t_vector	color; // r, g, b [0, 255]
 }	t_sphere;
 
 typedef struct s_plane
 {
-	t_sphere	*next;
+	void		*next;
 	int			type;
 	t_vector	origin;
 	t_vector	direction; // x, y, z [-1 , 1]
@@ -85,7 +78,7 @@ typedef struct s_plane
 
 typedef struct s_cylinder
 {
-	t_sphere	*next;
+	void		*next;
 	int			type;
 	t_vector	origin;
 	t_vector	direction; // x, y, z [-1 , 1]
@@ -107,19 +100,36 @@ typedef struct s_data
 	t_color		bg;
 	t_sphere	*shape;
 	t_light		*light;
+	t_vector	temp;
 }	t_data;
 
-float		vector_dot(t_vector a, t_vector b);
-t_vector	vector_add(t_vector a, t_vector b);
-t_vector	vector_sub(t_vector a, t_vector b);
-t_vector	vector_mul(t_vector a, float f);
-t_vector	vector_normalize(t_vector v);
 
+// vector.c
+float		vec3_dot(t_vector a, t_vector b);
+t_vector	vec3_add(t_vector a, t_vector b);
+t_vector	vec3_sub(t_vector a, t_vector b);
+t_vector	vec3_mul(t_vector a, float f);
+t_vector	vec3_normalize(t_vector v);
+
+// utils.c
 t_vector	color_mul(t_vector color, t_vector mul);
+t_vector	vec3_cross(t_vector a, t_vector b);
 float		vec3_length(t_vector v);
 float		clamp(float value, float min, float max);
+int			ft_pixel(int r, int g, int b, int a);
 
+// key_hook.c
 void		hook(mlx_key_data_t key, void *param);
+
+// sphere.c
+bool		sp_intersect(t_vector origin, t_vector direction, t_sphere *shape, float *t);
+t_color		trace_sphere(t_data *id, t_vector c_direction, t_sphere *sphere, float t);
+
+// plane.c
+bool		pl_intersect(t_vector origin, t_vector direction, t_plane *plane, float *t, t_data *id);
+
+// light.c
+t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
 
 
 #endif

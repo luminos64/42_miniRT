@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: usoontra <usoontra@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/04 20:45:28 by usoontra          #+#    #+#             */
-/*   Updated: 2025/05/05 00:27:39 by usoontra         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "miniRT.h"
 
@@ -18,6 +7,17 @@ t_vector	color_mul(t_vector color, t_vector mul)
 	color.y = color.y * mul.y;
 	color.z = color.z * mul.z;
 	return (color);
+}
+
+t_vector	vec3_cross(t_vector a, t_vector b)
+{
+	t_vector	res;
+
+	res.x = a.y * b.z - a.z * b.y;
+	res.y = a.z * b.x - a.x * b.z;
+	res.z = a.x * b.y - a.y * b.x;
+
+	return (res);
 }
 
 float	vec3_length(t_vector v)
@@ -32,4 +32,9 @@ float	clamp(float value, float min, float max)
 	else if (value > max)
 		return (max);
 	return (value);
+}
+
+int	ft_pixel(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
 }
