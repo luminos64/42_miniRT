@@ -24,12 +24,13 @@ int	word_count(char *str)
 	in_word = 0;
 	while (*str)
 	{
-		if ((*str != ' ' || *str != '\t' || *str != '\n') && in_word == 0)
+		if ((*str != ' ' || *str != '\t' || *str != '\n' || *str != ',')
+			&& in_word == 0)
 		{
 			count++;
 			in_word = 1;
 		}
-		else if (*str == ' ' || *str == '\t' || *str == '\n')
+		else if (*str == ' ' || *str == '\t' || *str == '\n' || *str == ',')
 			in_word = 0;
 		str++;
 	}
@@ -66,15 +67,14 @@ char	**ft_split(char *str)
 	start = 0;
 	end = 0;
 	arr = malloc(sizeof(char *) * (word_count(str) + 1));
-	if (!arr)
-		return (NULL);
 	while (i < word_count(str))
 	{
-		while (str[end] == ' ' || str[end] == '\t' || str[end] == '\n')
+		while (str[end] == ' ' || str[end] == '\t' || str[end] == '\n'
+			|| str[end] == ',')
 			end++;
 		start = end;
 		while (str[end] && str[end] != ' ' && str[end] != '\t'
-			&& str[end] != '\n')
+			&& str[end] != '\n' && str[end] != ',')
 			end++;
 		arr[i] = fill_word(str, start, end);
 		i++;
