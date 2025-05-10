@@ -1,4 +1,3 @@
-
 #include "miniRT.h"
 
 t_color	trace_ray(t_data *id, t_camera *camera, t_vector c_direction)
@@ -171,6 +170,7 @@ int	init(t_data *id)
 	return (EXIT_SUCCESS);
 }
 
+/*
 int	main(void)
 {
 	t_data		id;
@@ -192,4 +192,109 @@ int	main(void)
 	mlx_terminate(id.mlx);
 	free(id.camera);
 	free(id.ambient);
+}
+*/
+
+int main()
+{
+	t_data id;
+
+	//TODO Creaate init_data function so that it dont fet segfault
+	id.light = NULL;
+    id.plane = NULL;
+    id.shape = NULL;
+    id.cylynder = NULL;
+    id.ambient = NULL;
+    id.camera = NULL;
+
+	//TODO Make error if data have more that 1 Ambient and Camera
+	parser(&id);
+
+	//! Deleter this later
+	display_info(&id);
+	//TODO clean up
+	free(id.ambient);
+	free(id.camera);
+	return (EXIT_SUCCESS);
+}
+//TODO Comment this out when submit the work
+void	display_info(t_data *id)
+{
+	t_light *curr_light = id->light;
+	t_plane *curr_plane = id->plane;
+	t_sphere *curr_sphere = id->shape;
+	t_cylinder *curr_cylin = id->cylynder;
+
+	printf("Ambient Info: \n");
+	printf("Intense: %.2f\n", id->ambient->intens);
+	printf("Color.x: %.2f\n", id->ambient->color.x);
+	printf("Color.y: %.2f\n", id->ambient->color.y);
+	printf("Color.z: %.2f\n", id->ambient->color.z);
+
+	printf("\nCamera Info:\n");
+	printf("Origin.x: %.2f\n", id->camera->origin.x);
+	printf("Origin.y: %.2f\n", id->camera->origin.y);
+	printf("Origin.z: %.2f\n", id->camera->origin.z);
+	printf("Direction.x: %.2f\n", id->camera->direction.x);
+	printf("Direction.y: %.2f\n", id->camera->direction.y);
+	printf("Direction.z: %.2f\n", id->camera->direction.z);
+	printf("FOV: %.2f\n", id->camera->fov);
+
+	while (curr_light)
+	{
+		printf("\nLight Info:\n");
+		printf("Origin.x: %.2f\n", curr_light->origin.x);
+		printf("Origin.y: %.2f\n", curr_light->origin.y);
+		printf("Origin.z: %.2f\n", curr_light->origin.z);
+		printf("Bright: %.2f\n", curr_light->bright);
+		printf("Color.x: %.2f\n", curr_light->color.x);
+		printf("Color.y: %.2f\n", curr_light->color.y);
+		printf("Color.z: %.2f\n", curr_light->color.z);
+		curr_light = curr_light->next;
+	}
+
+	while(curr_plane)
+	{
+		printf("\nPlane Info\n");
+		printf("Origin.x: %.2f\n",curr_plane->origin.x);
+		printf("Origin.x: %.2f\n",curr_plane->origin.y);
+		printf("Origin.x: %.2f\n",curr_plane->origin.z);
+		printf("Direction.x: %.2f\n", curr_plane->direction.x);
+		printf("Direction.y: %.2f\n", curr_plane->direction.y);
+		printf("Direction.z: %.2f\n", curr_plane->direction.z);
+		printf("Color.x: %.2f\n", curr_plane->color.x);
+		printf("Color.y: %.2f\n", curr_plane->color.y);
+		printf("Color.z: %.2f\n", curr_plane->color.z);
+		curr_plane = curr_plane->next;
+	}
+
+	while (curr_sphere)
+	{
+		printf("\nSphere info:\n");
+		printf("origin.x: %.2f\n",curr_sphere->origin.x);
+		printf("origin.x: %.2f\n",curr_sphere->origin.y);
+		printf("origin.x: %.2f\n",curr_sphere->origin.z);
+		printf("radius: %.2f\n", curr_sphere->radius);
+		printf("color.x: %.2f\n", curr_sphere->color.x);
+		printf("color.y: %.2f\n", curr_sphere->color.y);
+		printf("color.z: %.2f\n", curr_sphere->color.z);
+		curr_sphere = curr_sphere->next;
+	}
+
+	while (curr_cylin)
+	{
+		printf("\nCylyder Info\n");
+		printf("Origin.x: %.2f\n",curr_cylin->origin.x);
+		printf("Origin.y: %.2f\n",curr_cylin->origin.y);
+		printf("Origin.z: %.2f\n",curr_cylin->origin.z);
+		printf("Direction.x: %.2f\n", curr_cylin->direction.x);
+		printf("Direction.y: %.2f\n", curr_cylin->direction.y);
+		printf("Direction.z: %.2f\n", curr_cylin->direction.z);
+		printf("Diameter: %.2f\n", curr_cylin->diameter);
+		printf("Height: %.2f\n", curr_cylin->height);
+		printf("Color.x: %.2f\n", curr_cylin->color.x);
+		printf("Color.y: %.2f\n", curr_cylin->color.y);
+		printf("Color.z: %.2f\n", curr_cylin->color.z);
+		curr_cylin = curr_cylin->next;
+	}
 }

@@ -8,6 +8,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdbool.h>
 
 # define WINX 1024
 # define WINY 512
@@ -95,11 +96,13 @@ typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	t_light_a	*ambient;
-	t_camera	*camera;
+	t_light_a	*ambient; //Ambient
+	t_camera	*camera; // Camera
 	t_color		bg;
-	t_sphere	*shape;
-	t_light		*light;
+	t_sphere	*shape; //Sphere
+	t_light		*light; //Light
+	t_plane		*plane; //Plane
+	t_cylinder	*cylynder; //Cylynder;
 	t_vector	temp;
 }	t_data;
 
@@ -130,6 +133,33 @@ bool		pl_intersect(t_vector origin, t_vector direction, t_plane *plane, float *t
 
 // light.c
 t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
+
+//parser
+void		parser(t_data *data);
+void		ft_free_exit(char **split_line, char *err_msg);
+
+//checker
+bool		check_argument(char **split_line, int limit);
+
+
+//free
+int			free_id_err(t_data *id);
+
+
+//assign scene
+int			assign_ambient(t_data *id, char **split_line);
+int			assign_camera(t_data *id, char **split_line);
+int			assign_light(t_data *id, char **split_line);
+
+//assign shape
+int			assign_plane(t_data *id, char **split_line);
+int			assign_sphere(t_data *id, char **split_line);
+int			assign_cylinder(t_data *id, char **split_line);
+
+//TODO comment this out later
+void	display_info(t_data *id);
+
+
 
 
 #endif
