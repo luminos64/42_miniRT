@@ -12,89 +12,73 @@
 
 #include "libft.h"
 
-static int	ft_count(char const *s, char c)
-{
-	int	words;
-	int	i;
+static char	*fill_word(char *str, int start, int end);
+static int	word_count(char *str);
 
-	words = 0;
-	i = 0;
-	if (*s == 0)
-		return (0);
-	while (s[i] != '\0')
+int	word_count(char *str)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*str)
 	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-			words++;
-		i++;
-	}
-	return (words);
-}
-
-static	int	ft_len(const char *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0' && s[i] != c)
-		i++;
-	return (i);
-}
-
-static char	**ft_free(char **str, int i)
-{
-	while (i >= 0)
-		free(str[i--]);
-	free(str);
-	return (NULL);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**res;
-	int		i;
-	int		j;
-
-	res = (char **)malloc((ft_count(s, c) + 1) * sizeof(char *));
-	if (!s || !res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i] != '\0')
-	{
-		while (s[i] == c)
-			i++;
-		if (s[i] != '\0')
+		if ((*str != ' ' || *str != '\t' || *str != '\n') && in_word == 0)
 		{
-			res[j] = ft_substr(s, i, ft_len(&s[i], c));
-			if (!res[j])
-				return (ft_free(res, j));
-			i = i + ft_len(&s[i], c);
-			j++;
+			count++;
+			in_word = 1;
 		}
+		else if (*str == ' ' || *str == '\t' || *str == '\n')
+			in_word = 0;
+		str++;
 	}
-	res[j] = NULL;
-	return (res);
+	return (count);
 }
 
-// int	main(void)
-// {
-// 	char	a[] = "  tripouille  42  ";
-// 	// char	b = '@';
-// 	char	**r;
-// 	int	i;
+char	*fill_word(char *str, int start, int end)
+{
+	char	*word;
+	int		i;
 
-// 	i = 0;
-// 	printf("a = %s\n", a);
-// 	r = ft_split(a, ' ');
-// 	while (*r)
-// 	{
-// 		printf("%s\n", *r++);
-// 		// i++;
-// 	}
-// 	while (*r[i] != '\0')
-// 	{
-// 		free(r[i]);
-// 		i++;
-// 	}
-// 	free(r);
-// }
+	i = 0;
+	word = malloc((end - start + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	while (start < end)
+	{
+		word[i] = str[start];
+		start++;
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+char	**ft_split(char *str)
+{
+	char	**arr;
+	int		i;
+	int		start;
+	int		end;
+
+	i = 0;
+	start = 0;
+	end = 0;
+	arr = malloc(sizeof(char *) * (word_count(str) + 1));
+	if (!arr)
+		return (NULL);
+	while (i < word_count(str))
+	{
+		while (str[end] == ' ' || str[end] == '\t' || str[end] == '\n')
+			end++;
+		start = end;
+		while (str[end] && str[end] != ' ' && str[end] != '\t'
+			&& str[end] != '\n')
+			end++;
+		arr[i] = fill_word(str, start, end);
+		i++;
+	}
+	arr[i] = NULL;
+	return (arr);
+}
