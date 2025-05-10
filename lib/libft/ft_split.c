@@ -24,7 +24,7 @@ int	word_count(char *str)
 	in_word = 0;
 	while (*str)
 	{
-		if ((*str != ' ' || *str != '\t' || *str != '\n' || *str != ',')
+		if ((*str != ' ' && *str != '\t' && *str != '\n' && *str != ',')
 			&& in_word == 0)
 		{
 			count++;
