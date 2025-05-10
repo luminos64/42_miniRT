@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:09:19 by usoontra          #+#    #+#             */
-/*   Updated: 2025/05/10 16:22:45 by nchencha         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:29:10 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <stdbool.h>
+# include <math.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
@@ -72,5 +74,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*get_next_line(int fd);
 char	**ft_split(char *str);
 void	ft_doublefree(char **str);
+int		ft_isequal(char *s1, char *s2);
+double	ft_atof(char *str);
 
 #endif

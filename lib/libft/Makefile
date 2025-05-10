@@ -48,7 +48,9 @@ SOURCE	= ft_isalpha.c \
 	ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c \
 	get_next_line.c \
-	ft_doublefree.c
+	ft_doublefree.c \
+	ft_isequal.c \
+	ft_atof.c
 
 HEADER		= .
 
