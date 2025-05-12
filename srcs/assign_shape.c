@@ -61,9 +61,11 @@ int	assign_cylinder(t_data *id, char **split_line)
 	if (!check_argument(split_line, 12))
 		return (0);
 	cylin_node = malloc(sizeof(t_cylinder));
+	if (!cylin_node)
+		return (0);
 	cylin_node->origin.x = ft_atof(split_line[1]);
-	cylin_node->origin.z = ft_atof(split_line[2]);
-	cylin_node->origin.x = ft_atof(split_line[3]);
+	cylin_node->origin.y = ft_atof(split_line[2]);
+	cylin_node->origin.z = ft_atof(split_line[3]);
 	cylin_node->direction.x = ft_atof(split_line[4]);
 	cylin_node->direction.y = ft_atof(split_line[5]);
 	cylin_node->direction.z = ft_atof(split_line[6]);
