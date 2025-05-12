@@ -8,9 +8,9 @@ int	assign_ambient(t_data *id, char **split_line)
 	if (!id->ambient)
 		return (0);
 	id->ambient->intens = ft_atof(split_line[1]);
-	id->ambient->color.x = ft_atof(split_line[2]);
-	id->ambient->color.y = ft_atof(split_line[3]);
-	id->ambient->color.z = ft_atof(split_line[4]);
+	id->ambient->color.x = ft_atof(split_line[2]) / 255 * id->ambient->intens;
+	id->ambient->color.y = ft_atof(split_line[3]) / 255 * id->ambient->intens;
+	id->ambient->color.z = ft_atof(split_line[4]) / 255 * id->ambient->intens;
 	if (!check_ambient(id))
 		return (0);
 	return (1);
@@ -65,9 +65,9 @@ int	assign_light(t_data *id, char **split_line)
 	light_node->origin.y = ft_atof(split_line[2]);
 	light_node->origin.z = ft_atof(split_line[3]);
 	light_node->bright = ft_atof(split_line[4]);
-	light_node->color.x = ft_atof(split_line[5]);
-	light_node->color.y = ft_atof(split_line[6]);
-	light_node->color.z = ft_atof(split_line[7]);
+	light_node->color.x = ft_atof(split_line[5]) / 255.0f * light_node->bright;
+	light_node->color.y = ft_atof(split_line[6]) / 255.0f * light_node->bright;
+	light_node->color.z = ft_atof(split_line[7]) / 255.0f * light_node->bright;
 	light_node->next = NULL;
 	if (!check_light_node(light_node))
 	{

@@ -8,6 +8,10 @@ void	init_data(t_data *id)
 	id->plane = NULL;
 	id->shape = NULL;
 	id->cylynder = NULL;
+	id->bg.r = 0;
+	id->bg.g = 0;
+	id->bg.b = 0;
+	id->bg.a = 255;
 }
 
 bool	ft_isspace(char c)
