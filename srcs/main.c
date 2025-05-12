@@ -195,18 +195,21 @@ int	main(void)
 }
 */
 
+void init_data(t_data *id)
+{
+	id->ambient = NULL;
+	id->camera = NULL;
+	id->light = NULL;
+	id->plane = NULL;
+	id->shape = NULL;
+	id->cylynder = NULL;
+}
+
 int main()
 {
 	t_data id;
 
-	//TODO Creaate init_data function so that it dont fet segfault
-	id.light = NULL;
-    id.plane = NULL;
-    id.shape = NULL;
-    id.cylynder = NULL;
-    id.ambient = NULL;
-    id.camera = NULL;
-
+	init_data(&id);
 	//TODO Make error if data have more that 1 Ambient and Camera
 	parser(&id);
 
