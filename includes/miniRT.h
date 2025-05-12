@@ -167,6 +167,11 @@ int			assign_plane(t_data *id, char **split_line);
 int			assign_sphere(t_data *id, char **split_line);
 int			assign_cylinder(t_data *id, char **split_line);
 
+//addback shape
+void		addback_plane_node(t_data *id, t_plane *new_node);
+void		addback_sphere_node(t_data *id, t_sphere *new_node);
+void		addback_cylin_node(t_data *id, t_cylinder *new_node);
+
 //TODO comment this out later
 void	display_info(t_data *id);
 

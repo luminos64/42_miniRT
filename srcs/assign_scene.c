@@ -13,12 +13,6 @@ int	assign_ambient(t_data *id, char **split_line)
 	id->ambient->color.z = ft_atof(split_line[4]);
 	if (!check_ambient(id))
 		return (0);
-	//!Delete this
-	// printf("Ambient Info: \n");
-	// printf("Intense:%.2f\n", id->ambient->intens);
-	// printf("Color.x: %.2f\n", id->ambient->color.x);
-	// printf("Color.y: %.2f\n", id->ambient->color.y);
-	// printf("Color.z: %.2f\n", id->ambient->color.z);
 	return (1);
 }
 
@@ -38,15 +32,6 @@ int	assign_camera(t_data *id, char **split_line)
 	id->camera->fov = ft_atof(split_line[7]);
 	if (!check_camera(id))
 		return (0);
-	//!Delete this
-	// printf("\nCamera Info:\n");
-	// printf("Origin.x: %.2f\n", id->camera->origin.x);
-	// printf("Origin.y: %.2f\n", id->camera->origin.y);
-	// printf("Origin.z: %.2f\n", id->camera->origin.z);
-	// printf("Direction.x: %.2f\n", id->camera->direction.x);
-	// printf("Direction.y: %.2f\n", id->camera->direction.y);
-	// printf("Direction.z: %.2f\n", id->camera->direction.z);
-	// printf("FOV: %.2f\n", id->camera->fov);
 	return (1);
 }
 
@@ -67,7 +52,7 @@ static void	addback_light_node(t_data *id, t_light *new_node)
 	current->next = new_node;
 }
 
-int			assign_light(t_data *id, char **split_line)
+int	assign_light(t_data *id, char **split_line)
 {
 	t_light	*light_node;
 
@@ -90,14 +75,5 @@ int			assign_light(t_data *id, char **split_line)
 		return (0);
 	}
 	addback_light_node(id, light_node);
-	//!Delete this  
-	// printf("\nLight Info:\n");
-	// printf("Origin.x: %.2f\n", light_node->origin.x);
-	// printf("Origin.y: %.2f\n", light_node->origin.y);
-	// printf("Origin.z: %.2f\n", light_node->origin.z);
-	// printf("Bright: %.2f\n", light_node->bright);
-	// printf("Color.x: %.2f\n", light_node->color.x);
-	// printf("Color.y: %.2f\n", light_node->color.y);
-	// printf("Color.z: %.2f\n", light_node->color.z);
 	return (1);
 }
