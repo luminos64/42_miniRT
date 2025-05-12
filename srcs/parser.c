@@ -1,11 +1,21 @@
 #include "miniRT.h"
 
-static bool check_and_assign(char **split_line, t_data *id)
+static bool	check_and_assign(char **split_line, t_data *id, int *amb, int *cam)
 {
 	if (ft_isequal(split_line[0], "A"))
+	{
+		(*amb)++;
+		if (*amb > 1)
+			return (false);
 		return (assign_ambient(id, split_line));
+	}
 	else if (ft_isequal(split_line[0], "C"))
+	{
+		(*cam)++;
+		if (*cam > 1)
+			return (false);
 		return (assign_camera(id, split_line));
+	}
 	else if (ft_isequal(split_line[0], "L"))
 		return (assign_light(id, split_line));
 	else if (ft_isequal(split_line[0], "pl"))
@@ -21,21 +31,26 @@ static bool check_and_assign(char **split_line, t_data *id)
 
 void	parser(t_data *id)
 {
-	char	*line;
 	int		fd;
+	int		amb_count;
+	int		cam_count;
 	char	**split_line;
+	char	*line;
 
+	amb_count = 0;
+	cam_count = 0;
 	fd = open("./srcs/data.rt", O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
 		split_line = ft_split(line);
 		free(line);
-		if (!check_and_assign(split_line, id))
+		if (!check_and_assign(split_line, id, &amb_count, &cam_count))
 			ft_free_exit(split_line, "Error");
 		ft_doublefree(split_line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 }
-
