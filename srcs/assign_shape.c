@@ -9,6 +9,7 @@ int	assign_plane(t_data *id, char **split_line)
 	plane_node = malloc(sizeof(t_plane));
 	if (!plane_node)
 		return (0);
+	plane_node->type = PLANE;
 	plane_node->origin.x = ft_atof(split_line[1]);
 	plane_node->origin.y = ft_atof(split_line[2]);
 	plane_node->origin.z = ft_atof(split_line[3]);
@@ -37,6 +38,7 @@ int	assign_sphere(t_data *id, char **split_line)
 	sphere_node = malloc(sizeof(t_sphere));
 	if (!sphere_node)
 		return (0);
+	sphere_node->type = SPHERE;
 	sphere_node->origin.x = ft_atof(split_line[1]);
 	sphere_node->origin.y = ft_atof(split_line[2]);
 	sphere_node->origin.z = ft_atof(split_line[3]);
@@ -61,6 +63,7 @@ int	assign_cylinder(t_data *id, char **split_line)
 	if (!check_argument(split_line, 12))
 		return (0);
 	cylin_node = malloc(sizeof(t_cylinder));
+	cylin_node->type = CYLINDER;
 	cylin_node->origin.x = ft_atof(split_line[1]);
 	cylin_node->origin.y = ft_atof(split_line[2]);
 	cylin_node->origin.z = ft_atof(split_line[3]);
