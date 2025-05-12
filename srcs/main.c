@@ -195,16 +195,6 @@ int	main(void)
 }
 */
 
-void init_data(t_data *id)
-{
-	id->ambient = NULL;
-	id->camera = NULL;
-	id->light = NULL;
-	id->plane = NULL;
-	id->shape = NULL;
-	id->cylynder = NULL;
-}
-
 int main()
 {
 	t_data id;
@@ -286,7 +276,7 @@ void	display_info(t_data *id)
 
 	while (curr_cylin)
 	{
-		printf("\nCylyder Info\n");
+		printf("\nCylider Info\n");
 		printf("Origin.x: %.2f\n",curr_cylin->origin.x);
 		printf("Origin.y: %.2f\n",curr_cylin->origin.y);
 		printf("Origin.z: %.2f\n",curr_cylin->origin.z);

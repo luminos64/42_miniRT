@@ -2,7 +2,6 @@
 
 static bool check_and_assign(char **split_line, t_data *id)
 {
-	//TODO Do we really need to check for character error? 
 	if (ft_isequal(split_line[0], "A"))
 		return (assign_ambient(id, split_line));
 	else if (ft_isequal(split_line[0], "C"))

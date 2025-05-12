@@ -37,11 +37,13 @@ int			assign_plane(t_data *id, char **split_line)
 	plane_node->color.y = ft_atof(split_line[8]);
 	plane_node->color.z = ft_atof(split_line[9]);
 	plane_node->next = NULL;
-
 	//!TODO Create check function 
-
+	if (!check_plane_node(plane_node))
+	{
+		free(plane_node);
+		return (0);
+	}
 	addback_plane_node(id, plane_node);
-
 	//!Delete this
 	// printf("\nPlane Info\n");
 	// printf("Origin.x: %.2f\n",plane_node->origin.x);
@@ -91,9 +93,11 @@ int			assign_sphere(t_data *id, char **split_line)
 	sphere_node->color.y = ft_atof(split_line[6]);
 	sphere_node->color.z = ft_atof(split_line[7]);
 	sphere_node->next = NULL;
-
-	//TODO Create Check funciton
-
+	if (!check_sphere_node(sphere_node))
+	{
+		free(sphere_node);
+		return (false);
+	}
 	addback_sphere_node(id, sphere_node);
 	//! Delete this
 	// printf("\nsphere info:\n");
@@ -106,7 +110,6 @@ int			assign_sphere(t_data *id, char **split_line)
 	// printf("color.z: %.2f\n", sphere_node->color.z);
 	return (1);
 }
-
 
 static void addback_cylin_node(t_data *id, t_cylinder *new_node)
 {
@@ -149,7 +152,11 @@ int			assign_cylinder(t_data *id, char **split_line)
 	cylin_node->next = NULL;
 
 	//TODO Create check function 
-
+	if (!check_cylinder_node(cylin_node))
+	{
+		free(cylin_node);
+		return (0);
+	}
 	addback_cylin_node(id, cylin_node);
 	//! Delete this
 	// printf("\nCylyder Info\n");

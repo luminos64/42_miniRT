@@ -4,7 +4,6 @@ int	assign_ambient(t_data *id, char **split_line)
 {
 	if (!check_argument(split_line, 5))
 		return (0);
-	// id->ambient = NULL;
 	id->ambient = malloc(sizeof(t_light_a));
 	if (!id->ambient)
 		return (0);
@@ -12,9 +11,8 @@ int	assign_ambient(t_data *id, char **split_line)
 	id->ambient->color.x = ft_atof(split_line[2]);
 	id->ambient->color.y = ft_atof(split_line[3]);
 	id->ambient->color.z = ft_atof(split_line[4]);
-
-	//!TODO Create funcion checker
-
+	if (!check_ambient(id))
+		return (0);
 	//!Delete this
 	// printf("Ambient Info: \n");
 	// printf("Intense:%.2f\n", id->ambient->intens);
@@ -28,7 +26,6 @@ int	assign_camera(t_data *id, char **split_line)
 {
 	if (!check_argument(split_line, 8))
 		return (0);
-	// id->camera = NULL;
 	id->camera = malloc(sizeof(t_camera));
 	if (!id->camera)
 		return (0);
@@ -39,9 +36,8 @@ int	assign_camera(t_data *id, char **split_line)
 	id->camera->direction.y = ft_atof(split_line[5]);
 	id->camera->direction.z = ft_atof(split_line[6]);
 	id->camera->fov = ft_atof(split_line[7]);
-
-	//TODO Create function checker
-
+	if (!check_camera(id))
+		return (0);
 	//!Delete this
 	// printf("\nCamera Info:\n");
 	// printf("Origin.x: %.2f\n", id->camera->origin.x);
@@ -77,7 +73,6 @@ int			assign_light(t_data *id, char **split_line)
 
 	if (!check_argument(split_line, 8))
 		return (0);
-	// id->light = NULL;
 	light_node = malloc(sizeof(t_light));
 	if (!light_node)
 		return (0);
@@ -89,10 +84,13 @@ int			assign_light(t_data *id, char **split_line)
 	light_node->color.y = ft_atof(split_line[6]);
 	light_node->color.z = ft_atof(split_line[7]);
 	light_node->next = NULL;
-	//TODO Create function checker 
-
+	if (!check_light_node(light_node))
+	{
+		free(light_node);
+		return (0);
+	}
 	addback_light_node(id, light_node);
-	//!Delete this
+	//!Delete this  
 	// printf("\nLight Info:\n");
 	// printf("Origin.x: %.2f\n", light_node->origin.x);
 	// printf("Origin.y: %.2f\n", light_node->origin.y);

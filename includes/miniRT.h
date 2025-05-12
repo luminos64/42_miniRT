@@ -120,6 +120,7 @@ t_vector	vec3_cross(t_vector a, t_vector b);
 float		vec3_length(t_vector v);
 float		clamp(float value, float min, float max);
 int			ft_pixel(int r, int g, int b, int a);
+void		init_data(t_data *id);
 
 // key_hook.c
 void		hook(mlx_key_data_t key, void *param);
@@ -138,8 +139,18 @@ t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
 void		parser(t_data *data);
 void		ft_free_exit(char **split_line, char *err_msg);
 
-//checker
+//checker scene
 bool		check_argument(char **split_line, int limit);
+bool		check_color(t_vector *color);
+bool		check_direction(t_vector *direction);
+bool		check_ambient(t_data *id);
+bool		check_camera(t_data *id);
+
+//checker shape
+bool		check_light_node(t_light *light_node);
+bool		check_plane_node(t_plane *plane_node);
+bool		check_sphere_node(t_sphere *sphere_node);
+bool		check_cylinder_node(t_cylinder *cylin_node);
 
 
 //free

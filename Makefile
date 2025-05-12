@@ -12,7 +12,7 @@ SRC_DIR	= srcs
 INC_DIR	= includes
 
 SOURCE	= main.c vector.c key_hook.c utils.c sphere.c light.c plane.c parser.c assign_scene.c \
-			free.c checker.c assign_shape.c
+			free.c check_scene.c check_shape.c assign_shape.c utils2.c
 
 LIB_FT	= ./lib/libft
 

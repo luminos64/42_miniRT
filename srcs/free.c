@@ -2,6 +2,7 @@
 
 void	ft_free_exit(char **split_line,char *err_msg)
 {
+	//!TODO need to free id too
 	printf("%s\n", err_msg);
 	ft_doublefree(split_line);
 	exit (EXIT_FAILURE);
