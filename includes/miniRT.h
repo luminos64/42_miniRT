@@ -8,6 +8,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdbool.h>
 
 # define WINX 1024
 # define WINY 512
@@ -95,11 +96,13 @@ typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	t_light_a	*ambient;
-	t_camera	*camera;
+	t_light_a	*ambient; //Ambient
+	t_camera	*camera; // Camera
 	t_color		bg;
-	t_sphere	*shape;
-	t_light		*light;
+	t_sphere	*shape; //Sphere
+	t_light		*light; //Light
+	t_plane		*plane; //Plane
+	t_cylinder	*cylynder; //Cylynder;
 	t_vector	temp;
 }	t_data;
 
@@ -117,6 +120,11 @@ t_vector	vec3_cross(t_vector a, t_vector b);
 float		vec3_length(t_vector v);
 float		clamp(float value, float min, float max);
 int			ft_pixel(int r, int g, int b, int a);
+void		init_data(t_data *id);
+bool		ft_isspace(char c);
+bool		ft_isspace_line(char *line);
+bool		is_skippable_line(char *line);
+char		*get_next_valid_line(int fd);
 
 // key_hook.c
 void		hook(mlx_key_data_t key, void *param);
@@ -130,6 +138,51 @@ bool		pl_intersect(t_vector origin, t_vector direction, t_plane *plane, float *t
 
 // light.c
 t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
+
+//parser
+void		parser(t_data *data);
+
+//checker scene
+bool		check_argument(char **split_line, int limit);
+bool		check_color(t_vector *color);
+bool		check_direction(t_vector *direction);
+bool		check_ambient(t_data *id);
+bool		check_camera(t_data *id);
+
+//checker shape
+bool		check_light_node(t_light *light_node);
+bool		check_plane_node(t_plane *plane_node);
+bool		check_sphere_node(t_sphere *sphere_node);
+bool		check_cylinder_node(t_cylinder *cylin_node);
+
+
+//free
+void		free_success(t_data *id);
+void		ft_free_exit(char **split_line, t_data *data, int fd, char *err_msg);
+void		free_light(t_light *light_node);
+void		free_plane(t_plane *plane_node);
+void		free_sphere(t_sphere *sphere_node);
+void		free_cylin(t_cylinder *cylin_node);
+
+//assign scene
+int			assign_ambient(t_data *id, char **split_line);
+int			assign_camera(t_data *id, char **split_line);
+int			assign_light(t_data *id, char **split_line);
+
+//assign shape
+int			assign_plane(t_data *id, char **split_line);
+int			assign_sphere(t_data *id, char **split_line);
+int			assign_cylinder(t_data *id, char **split_line);
+
+//addback shape
+void		addback_plane_node(t_data *id, t_plane *new_node);
+void		addback_sphere_node(t_data *id, t_sphere *new_node);
+void		addback_cylin_node(t_data *id, t_cylinder *new_node);
+
+//TODO comment this out later
+void	display_info(t_data *id);
+
+
 
 
 #endif

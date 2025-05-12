@@ -1,0 +1,35 @@
+#Default
+#.gitignore
+#*.md
+.vscode
+*.out
+*.o
+*.so
+*.a
+.vscode/
+a.out
+*.txt
+
+# Libraries
+*.lib
+CMakeFiles
+build
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Misc
+main.c
+.vscode/
+.DS_Store
+
+#project
+pipex
+fractol
+push_swap
+miniRT
