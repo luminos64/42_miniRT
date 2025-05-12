@@ -121,6 +121,10 @@ float		vec3_length(t_vector v);
 float		clamp(float value, float min, float max);
 int			ft_pixel(int r, int g, int b, int a);
 void		init_data(t_data *id);
+bool		ft_isspace(char c);
+bool		ft_isspace_line(char *line);
+bool		is_skippable_line(char *line);
+char		*get_next_valid_line(int fd);
 
 // key_hook.c
 void		hook(mlx_key_data_t key, void *param);
@@ -137,7 +141,6 @@ t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
 
 //parser
 void		parser(t_data *data);
-void		ft_free_exit(char **split_line, char *err_msg);
 
 //checker scene
 bool		check_argument(char **split_line, int limit);
@@ -154,8 +157,12 @@ bool		check_cylinder_node(t_cylinder *cylin_node);
 
 
 //free
-int			free_id_err(t_data *id);
-
+void		free_success(t_data *id);
+void		ft_free_exit(char **split_line, t_data *data, int fd, char *err_msg);
+void		free_light(t_light *light_node);
+void		free_plane(t_plane *plane_node);
+void		free_sphere(t_sphere *sphere_node);
+void		free_cylin(t_cylinder *cylin_node);
 
 //assign scene
 int			assign_ambient(t_data *id, char **split_line);

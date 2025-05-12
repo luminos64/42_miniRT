@@ -200,14 +200,12 @@ int main()
 	t_data id;
 
 	init_data(&id);
-	//TODO Make error if data have more that 1 Ambient and Camera
 	parser(&id);
 
 	//! Deleter this later
 	display_info(&id);
 	//TODO clean up
-	free(id.ambient);
-	free(id.camera);
+	free_success(&id);
 	return (EXIT_SUCCESS);
 }
 //TODO Comment this out when submit the work

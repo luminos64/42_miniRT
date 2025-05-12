@@ -42,15 +42,15 @@ void	parser(t_data *id)
 	fd = open("./srcs/data.rt", O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);
-	line = get_next_line(fd);
+	line = get_next_valid_line(fd);
 	while (line)
 	{
 		split_line = ft_split(line);
 		free(line);
 		if (!check_and_assign(split_line, id, &amb_count, &cam_count))
-			ft_free_exit(split_line, "Error");
+			ft_free_exit(split_line, id, fd, "Error");
 		ft_doublefree(split_line);
-		line = get_next_line(fd);
+		line = get_next_valid_line(fd);
 	}
 	close(fd);
 }
