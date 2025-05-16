@@ -53,19 +53,20 @@ char	*get_next_valid_line(int fd)
 }
 
 //TODO Comment this out when submit the work
-void	display_info(t_data *id)
+void display_info(t_data *id)
 {
 	t_light *curr_light = id->light;
-	t_plane *curr_plane = id->plane;
-	t_sphere *curr_sphere = id->shape;
-	t_cylinder *curr_cylin = id->cylynder;
+	t_sphere *curr_shape = id->shape;
+	bool sphere_found = false;
+	bool plane_found = false;
+	bool cylinder_found = false;
 
 	if (!id)
-		return ;
+		return;
 
 	if (id->ambient)
 	{
-		printf("Ambient Info: \n");
+		printf("Ambient Info:\n");
 		printf("Intense: %.2f\n", id->ambient->intens);
 		printf("Color.x: %.2f\n", id->ambient->color.x);
 		printf("Color.y: %.2f\n", id->ambient->color.y);
@@ -105,65 +106,61 @@ void	display_info(t_data *id)
 	}
 	else
 		printf("\nNo Light found\n");
-
-
-	if (curr_plane)	
+	if (curr_shape)
 	{
-		while(curr_plane)
+		while (curr_shape)
 		{
-			printf("\nPlane Info\n");
-			printf("Origin.x: %.2f\n",curr_plane->origin.x);
-			printf("Origin.x: %.2f\n",curr_plane->origin.y);
-			printf("Origin.x: %.2f\n",curr_plane->origin.z);
-			printf("Direction.x: %.2f\n", curr_plane->direction.x);
-			printf("Direction.y: %.2f\n", curr_plane->direction.y);
-			printf("Direction.z: %.2f\n", curr_plane->direction.z);
-			printf("Color.x: %.2f\n", curr_plane->color.x);
-			printf("Color.y: %.2f\n", curr_plane->color.y);
-			printf("Color.z: %.2f\n", curr_plane->color.z);
-			curr_plane = curr_plane->next;
+			if (curr_shape->type == SPHERE)
+			{
+				sphere_found = true;
+				printf("\nSphere Info:\n");
+				printf("Origin.x: %.2f\n", curr_shape->origin.x);
+				printf("Origin.y: %.2f\n", curr_shape->origin.y);
+				printf("Origin.z: %.2f\n", curr_shape->origin.z);
+				printf("Radius: %.2f\n", curr_shape->radius);
+				printf("Color.x: %.2f\n", curr_shape->color.x);
+				printf("Color.y: %.2f\n", curr_shape->color.y);
+				printf("Color.z: %.2f\n", curr_shape->color.z);
+			}
+			else if (curr_shape->type == PLANE)
+			{
+				plane_found = true;
+				t_plane *plane = (t_plane *)curr_shape;
+				printf("\nPlane Info:\n");
+				printf("Origin.x: %.2f\n", plane->origin.x);
+				printf("Origin.y: %.2f\n", plane->origin.y);
+				printf("Origin.z: %.2f\n", plane->origin.z);
+				printf("Direction.x: %.2f\n", plane->direction.x);
+				printf("Direction.y: %.2f\n", plane->direction.y);
+				printf("Direction.z: %.2f\n", plane->direction.z);
+				printf("Color.x: %.2f\n", plane->color.x);
+				printf("Color.y: %.2f\n", plane->color.y);
+				printf("Color.z: %.2f\n", plane->color.z);
+			}
+			else if (curr_shape->type == CYLINDER)
+			{
+				cylinder_found = true;
+				t_cylinder *cyl = (t_cylinder *)curr_shape;
+				printf("\nCylinder Info:\n");
+				printf("Origin.x: %.2f\n", cyl->origin.x);
+				printf("Origin.y: %.2f\n", cyl->origin.y);
+				printf("Origin.z: %.2f\n", cyl->origin.z);
+				printf("Direction.x: %.2f\n", cyl->direction.x);
+				printf("Direction.y: %.2f\n", cyl->direction.y);
+				printf("Direction.z: %.2f\n", cyl->direction.z);
+				printf("Diameter: %.2f\n", cyl->diameter);
+				printf("Height: %.2f\n", cyl->height);
+				printf("Color.x: %.2f\n", cyl->color.x);
+				printf("Color.y: %.2f\n", cyl->color.y);
+				printf("Color.z: %.2f\n", cyl->color.z);
+			}
+			curr_shape = curr_shape->next;
 		}
 	}
-	else
-		printf ("\nNo Plane found");
-
-	if (curr_sphere)
-	{
-		while (curr_sphere)
-		{
-			printf("\nSphere info:\n");
-			printf("origin.x: %.2f\n",curr_sphere->origin.x);
-			printf("origin.x: %.2f\n",curr_sphere->origin.y);
-			printf("origin.x: %.2f\n",curr_sphere->origin.z);
-			printf("radius: %.2f\n", curr_sphere->radius);
-			printf("color.x: %.2f\n", curr_sphere->color.x);
-			printf("color.y: %.2f\n", curr_sphere->color.y);
-			printf("color.z: %.2f\n", curr_sphere->color.z);
-			curr_sphere = curr_sphere->next;
-		}
-	}
-	else
-		printf("\nNo Sphere founded\n");
-
-	if (curr_cylin)
-	{
-		while (curr_cylin)
-		{
-			printf("\nCylider Info\n");
-			printf("Origin.x: %.2f\n",curr_cylin->origin.x);
-			printf("Origin.y: %.2f\n",curr_cylin->origin.y);
-			printf("Origin.z: %.2f\n",curr_cylin->origin.z);
-			printf("Direction.x: %.2f\n", curr_cylin->direction.x);
-			printf("Direction.y: %.2f\n", curr_cylin->direction.y);
-			printf("Direction.z: %.2f\n", curr_cylin->direction.z);
-			printf("Diameter: %.2f\n", curr_cylin->diameter);
-			printf("Height: %.2f\n", curr_cylin->height);
-			printf("Color.x: %.2f\n", curr_cylin->color.x);
-			printf("Color.y: %.2f\n", curr_cylin->color.y);
-			printf("Color.z: %.2f\n", curr_cylin->color.z);
-			curr_cylin = curr_cylin->next;
-		}
-	}
-	else
+	if (!sphere_found)
+		printf("\nNo Sphere found\n");
+	if (!plane_found)
+		printf("\nNo Plane found\n");
+	if (!cylinder_found)
 		printf("\nNo Cylinder found\n");
 }
