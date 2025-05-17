@@ -23,6 +23,7 @@ void	addback_sphere_node(t_data *id, t_sphere *new_node)
 
 	if (!id || !new_node)
 		return ;
+	new_node->next = NULL;
 	if (!id->shape)
 	{
 		id->shape = new_node;

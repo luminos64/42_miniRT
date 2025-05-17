@@ -25,7 +25,7 @@ int	assign_plane(t_data *id, char **split_line)
 		free(plane_node);
 		return (0);
 	}
-	addback_plane_node(id, plane_node);
+	addback_sphere_node(id, (t_sphere*)plane_node);
 	return (1);
 }
 
@@ -81,6 +81,6 @@ int	assign_cylinder(t_data *id, char **split_line)
 		free(cylin_node);
 		return (0);
 	}
-	addback_cylin_node(id, cylin_node);
+	addback_sphere_node(id, (t_sphere*)cylin_node);
 	return (1);
 }
