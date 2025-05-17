@@ -92,5 +92,7 @@ void	parser(t_data *id)
 		ft_doublefree(split_line);
 		line = get_next_valid_line(fd);
 	}
+	if (amb_count == 0 || cam_count == 0)
+		ft_free_exit(NULL, id, fd, "Error");
 	close(fd);
 }
