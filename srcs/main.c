@@ -14,6 +14,10 @@ t_color	trace_ray(t_data *id, t_camera *camera, t_vector c_direction)
 			color = trace_sphere(id, c_direction, (t_sphere *)shape, t);
 			return (color);
 		}
+		else if (shape->type == CYLINDER && cylin_intersect(camera->origin, c_direction, (t_cylinder *)shape, &t))
+		{
+			return ((t_color){0, 0, 255, 255});
+		}
 		// else if (shape->type == PLANE && pl_intersect(camera->origin, c_direction, (t_plane *)shape, &t, id))
 		// {
 		// 	return ((t_color){255, 255, 255, 255});
@@ -65,10 +69,10 @@ int main()
 	id.img = mlx_new_image(id.mlx, WINX, WINY);
 	if (!id.img)
 		return (EXIT_FAILURE);
-	// render(&id);
+	render(&id);
 	if (mlx_image_to_window(id.mlx, id.img, 0, 0) < 0)
 		return (EXIT_FAILURE);	// render(&id);
-	mlx_loop_hook(id.mlx, &render, &id);
+	// mlx_loop_hook(id.mlx, &render, &id);
 	mlx_key_hook(id.mlx, &hook, &id);
 	mlx_loop(id.mlx);
 	mlx_terminate(id.mlx);

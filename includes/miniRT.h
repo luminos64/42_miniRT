@@ -139,6 +139,9 @@ bool		pl_intersect(t_vector origin, t_vector direction, t_plane *plane, float *t
 // light.c
 t_color		light_cal(t_data *id, t_vector hit, t_vector normal, t_vector s_color);
 
+// cylinder
+bool		cylin_intersect(t_vector cam_origin, t_vector nmlize_direct, t_cylinder *cylin, float *t);
+
 //parser
 void		parser(t_data *data);
 
