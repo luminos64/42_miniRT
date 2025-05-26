@@ -77,7 +77,7 @@ void	parser(t_data *id)
 
 	amb_count = 0;
 	cam_count = 0;
-	fd = open("./map/data2.rt", O_RDONLY);
+	fd = open("./map/cylin.rt", O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);
 	line = get_next_valid_line(fd);
@@ -92,5 +92,7 @@ void	parser(t_data *id)
 		ft_doublefree(split_line);
 		line = get_next_valid_line(fd);
 	}
+	if (amb_count == 0 || cam_count == 0)
+		ft_free_exit(NULL, id, fd, "Error");
 	close(fd);
 }

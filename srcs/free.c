@@ -4,7 +4,8 @@ void	ft_free_exit(char **split_line, t_data *id, int fd, char *err_msg)
 {
 	printf("%s\n", err_msg);
 	free_success(id);
-	ft_doublefree(split_line);
+	if (split_line)	
+		ft_doublefree(split_line);
 	close(fd);
 	exit (EXIT_FAILURE);
 }
