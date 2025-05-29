@@ -15,7 +15,7 @@ bool	check_plane_node(t_plane *plane_node)
 {
 	if (!plane_node)
 		return (false);
-	if (!check_direction(&plane_node->direction))
+	if (!check_direction(&plane_node->normal))
 		return (false);
 	if (!check_color(&plane_node->color))
 		return (false);
@@ -35,7 +35,7 @@ bool	check_cylinder_node(t_cylinder *cylin_node)
 {
 	if (!cylin_node)
 		return (false);
-	if (!check_direction(&cylin_node->direction))
+	if (!check_direction(&cylin_node->normal))
 		return (false);
 	if (!check_color(&cylin_node->color))
 		return (false);

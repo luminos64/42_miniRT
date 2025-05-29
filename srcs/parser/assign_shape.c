@@ -13,11 +13,11 @@ int	assign_plane(t_data *id, char **split_line)
 	plane_node->origin.x = ft_atof(split_line[1]);
 	plane_node->origin.y = ft_atof(split_line[2]);
 	plane_node->origin.z = ft_atof(split_line[3]);
-	plane_node->direction.x = ft_atof(split_line[4]);
-	plane_node->direction.y = ft_atof(split_line[5]);
-	plane_node->direction.z = ft_atof(split_line[6]);
+	plane_node->normal.x = ft_atof(split_line[4]);
+	plane_node->normal.y = ft_atof(split_line[5]);
+	plane_node->normal.z = ft_atof(split_line[6]);
 	plane_node->color.x = ft_atof(split_line[7]) / 255.0f;
-	plane_node->color.y = ft_atof(split_line[8]) / 225.0f;
+	plane_node->color.y = ft_atof(split_line[8]) / 255.0f;
 	plane_node->color.z = ft_atof(split_line[9]) / 255.0f;
 	plane_node->next = NULL;
 	if (!check_plane_node(plane_node))
@@ -67,9 +67,9 @@ int	assign_cylinder(t_data *id, char **split_line)
 	cylin_node->origin.x = ft_atof(split_line[1]);
 	cylin_node->origin.y = ft_atof(split_line[2]);
 	cylin_node->origin.z = ft_atof(split_line[3]);
-	cylin_node->direction.x = ft_atof(split_line[4]);
-	cylin_node->direction.y = ft_atof(split_line[5]);
-	cylin_node->direction.z = ft_atof(split_line[6]);
+	cylin_node->normal.x = ft_atof(split_line[4]);
+	cylin_node->normal.y = ft_atof(split_line[5]);
+	cylin_node->normal.z = ft_atof(split_line[6]);
 	cylin_node->diameter = ft_atof(split_line[7]);
 	cylin_node->height = ft_atof(split_line[8]);
 	cylin_node->color.x = ft_atof(split_line[9]) / 255.0f;
