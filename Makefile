@@ -11,7 +11,7 @@ SRC_DIR	= srcs
 
 INC_DIR	= includes
 
-PASER	= parser.c assign_scene.c check_scene.c check_shape.c assign_shape.c \
+PARSER	= parser.c assign_scene.c check_scene.c check_shape.c assign_shape.c \
 			addback_shape.c free_shape.c free.c
 
 OBJECTS	= trace_light.c sphere.c plane.c cylinder.c normal.c shadow_check.c
@@ -19,7 +19,7 @@ OBJECTS	= trace_light.c sphere.c plane.c cylinder.c normal.c shadow_check.c
 UTILS	= vector_cal_01.c vector_cal_02.c utils.c
 
 SOURCE	= main.c  key_hook.c \
-			$(addprefix paser/, $(PASER))\
+			$(addprefix parser/, $(PARSER))\
 			$(addprefix objects/, $(OBJECTS))\
 			$(addprefix utils/, $(UTILS))
 
