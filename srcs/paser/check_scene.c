@@ -14,7 +14,7 @@ bool	check_argument(char **split_line, int limit)
 	return (true);
 }
 
-bool	check_color(t_vector *color)
+bool	check_color(t_vec *color)
 {
 	if (color->x < 0 || color->y < 0 || color->z < 0)
 		return (false);
@@ -24,7 +24,7 @@ bool	check_color(t_vector *color)
 }
 
 //Direction is Normalized in this code
-bool	check_direction(t_vector *direction)
+bool	check_direction(t_vec *direction)
 {
 	if (direction->x < -1 || direction->y < -1 || direction->z < -1)
 		return (false);

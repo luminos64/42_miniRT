@@ -55,11 +55,11 @@ char	*get_next_valid_line(int fd)
 //TODO Comment this out when submit the work
 void display_info(t_data *id)
 {
-	t_light *curr_light = id->light;
-	t_sphere *curr_shape = id->shape;
-	bool sphere_found = false;
-	bool plane_found = false;
-	bool cylinder_found = false;
+	t_light		*curr_light = id->light;
+	t_sphere	*curr_shape = id->shape;
+	bool		sphere_found = false;
+	bool		plane_found = false;
+	bool		cylinder_found = false;
 
 	if (!id)
 		return;
@@ -130,9 +130,9 @@ void display_info(t_data *id)
 				printf("Origin.x: %.2f\n", plane->origin.x);
 				printf("Origin.y: %.2f\n", plane->origin.y);
 				printf("Origin.z: %.2f\n", plane->origin.z);
-				printf("Direction.x: %.2f\n", plane->direction.x);
-				printf("Direction.y: %.2f\n", plane->direction.y);
-				printf("Direction.z: %.2f\n", plane->direction.z);
+				printf("Direction.x: %.2f\n", plane->normal.x);
+				printf("Direction.y: %.2f\n", plane->normal.y);
+				printf("Direction.z: %.2f\n", plane->normal.z);
 				printf("Color.x: %.2f\n", plane->color.x);
 				printf("Color.y: %.2f\n", plane->color.y);
 				printf("Color.z: %.2f\n", plane->color.z);
@@ -145,9 +145,9 @@ void display_info(t_data *id)
 				printf("Origin.x: %.2f\n", cyl->origin.x);
 				printf("Origin.y: %.2f\n", cyl->origin.y);
 				printf("Origin.z: %.2f\n", cyl->origin.z);
-				printf("Direction.x: %.2f\n", cyl->direction.x);
-				printf("Direction.y: %.2f\n", cyl->direction.y);
-				printf("Direction.z: %.2f\n", cyl->direction.z);
+				printf("Direction.x: %.2f\n", cyl->normal.x);
+				printf("Direction.y: %.2f\n", cyl->normal.y);
+				printf("Direction.z: %.2f\n", cyl->normal.z);
 				printf("Diameter: %.2f\n", cyl->diameter);
 				printf("Height: %.2f\n", cyl->height);
 				printf("Color.x: %.2f\n", cyl->color.x);

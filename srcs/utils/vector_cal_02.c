@@ -1,26 +1,27 @@
 
 #include "miniRT.h"
 
-t_vector	color_mul(t_vector color, t_vector mul)
+t_vec	color_mul(t_vec color, t_vec mul)
 {
-	color.x = color.x * mul.x;
-	color.y = color.y * mul.y;
-	color.z = color.z * mul.z;
-	return (color);
+	t_vec	res;
+
+	res.x = color.x * mul.x;
+	res.y = color.y * mul.y;
+	res.z = color.z * mul.z;
+	return (res);
 }
 
-t_vector	vec3_cross(t_vector a, t_vector b)
+t_vec	vec3_cross(t_vec a, t_vec b)
 {
-	t_vector	res;
+	t_vec	res;
 
 	res.x = a.y * b.z - a.z * b.y;
 	res.y = a.z * b.x - a.x * b.z;
 	res.z = a.x * b.y - a.y * b.x;
-
 	return (res);
 }
 
-float	vec3_length(t_vector v)
+float	vec3_length(t_vec v)
 {
 	return (sqrtf((v.x * v.x) + (v.y * v.y) + (v.z * v.z)));
 }
