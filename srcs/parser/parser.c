@@ -81,7 +81,13 @@ void	parser(t_data *id)
 
 	amb_count = 0;
 	cam_count = 0;
-	fd = open("./map/data2.rt", O_RDONLY);
+	// fd = open("./map/01_only_plane.rt", O_RDONLY);
+	// fd = open("./map/01_only_sphere.rt", O_RDONLY);
+	fd = open("./map/02_traffic_light.rt", O_RDONLY);
+	// fd = open("./map/03_snowman.rt", O_RDONLY);
+	// fd = open("./map/04_sphere_w_plane_x.rt", O_RDONLY);
+	// fd = open("./map/04_sphere_w_plane_y.rt", O_RDONLY);
+	// fd = open("./map/05_sphere_color.rt", O_RDONLY);
 	// fd = open("./map/cylin.rt", O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);

@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-void	init_data(t_data *id)
+bool	init_data(t_data *id)
 {
 	id->ambient = NULL;
 	id->camera = NULL;
@@ -8,10 +8,25 @@ void	init_data(t_data *id)
 	id->plane = NULL;
 	id->shape = NULL;
 	id->cylynder = NULL;
+	id->checker_board = false;
+	id->bump_map = false;
 	id->bg.r = 0;
 	id->bg.g = 0;
 	id->bg.b = 0;
 	id->bg.a = 255;
+	id->mlx = NULL;
+	id->mlx = mlx_init(WINX, WINY, "miniRT", false);
+	if (!id->mlx)
+		return (false);
+	id->b_texture = NULL;
+	id->b_texture = mlx_load_png("./texture/brick.png");
+	if (!id->b_texture)
+	{
+		mlx_terminate(id->mlx);
+		return (false);
+	}
+	id->img = NULL;
+	return (true);
 }
 
 bool	ft_isspace(char c)
@@ -81,9 +96,9 @@ void display_info(t_data *id)
 		printf("Origin.x: %.2f\n", id->camera->origin.x);
 		printf("Origin.y: %.2f\n", id->camera->origin.y);
 		printf("Origin.z: %.2f\n", id->camera->origin.z);
-		printf("Direction.x: %.2f\n", id->camera->direction.x);
-		printf("Direction.y: %.2f\n", id->camera->direction.y);
-		printf("Direction.z: %.2f\n", id->camera->direction.z);
+		printf("Direction.x: %.2f\n", id->camera->di.x);
+		printf("Direction.y: %.2f\n", id->camera->di.y);
+		printf("Direction.z: %.2f\n", id->camera->di.z);
 		printf("FOV: %.2f\n", id->camera->fov);
 	}
 	else
