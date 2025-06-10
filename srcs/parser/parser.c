@@ -24,8 +24,6 @@ static bool	check_and_assign(char **split_line, t_data *id, int *amb, int *cam)
 		return (assign_sphere(id, split_line));
 	else if (ft_isequal(split_line[0], "cy"))
 		return (assign_cylinder(id, split_line));
-	else if (split_line[0][0] == '#')
-		return (true);
 	else
 		return (false);
 	return (true);
@@ -60,8 +58,6 @@ static bool	is_all_num(char **split_line)
 	int	i;
 
 	i = 1;
-	if (split_line[0][0] == '#')
-		i = 2;
 	while (split_line[i])
 	{
 		if (!is_valid_number(split_line[i]))

@@ -42,7 +42,8 @@ bool	ft_isspace_line(char *line)
 
 bool	is_skippable_line(char *line)
 {
-	return (line[0] == '\n' || line[0] == '\0' || ft_isspace_line(line));
+	return (line[0] == '\n' || line[0] == '\0' || ft_isspace_line(line)
+	|| line[0] == '#');
 }
 
 char	*get_next_valid_line(int fd)
