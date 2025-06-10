@@ -1,4 +1,3 @@
-
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -51,6 +50,13 @@ typedef struct s_camera
 	t_vec		direction; // x, y, z [-1 , 1]
 }	t_camera;
 
+typedef struct s_coeef
+{
+	float	a;
+	float	b;
+	float	c;
+}	t_coeef;
+
 typedef struct s_light
 {
 	struct s_light	*next;
@@ -88,6 +94,21 @@ typedef struct s_cylinder
 	float		height;
 }	t_cylinder;
 
+typedef struct s_intersection_data
+{
+	t_vec		cam_origin;
+	t_vec		direction;
+	t_cylinder	*cylin;
+	float		t1;
+	float		t2;
+}	t_intersection_data;
+typedef struct s_valid_intersections
+{
+	bool	t1_valid;
+	bool	t2_valid;
+	float	t1;
+	float	t2;
+}	t_valid_intersections;
 typedef struct s_hit
 {
 	t_sphere	*hit_shape;
@@ -97,25 +118,53 @@ typedef struct s_hit
 	int			type;
 }	t_hit;
 
-// type 0 = sphere
-// type 1 = plane
-// type 2 = cylinder
-
 typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	t_light_a	*ambient; //Ambient
-	t_camera	*camera; // Camera
+	t_light_a	*ambient;
+	t_camera	*camera;
 	t_color		bg;
-	t_sphere	*shape; //Sphere
-	t_light		*light; //Light
-	t_plane		*plane; //Plane
-	t_cylinder	*cylynder; //Cylynder;
+	t_sphere	*shape;
+	t_light		*light;
+	t_plane		*plane;
+	t_cylinder	*cylynder;
 	t_vec		temp;
 	t_vec		di;
 }	t_data;
 
+typedef struct s_intersection_coef
+{
+	float	discriminant;
+	float	a;
+	float	b;
+	float	*t1;
+	float	*t2;
+}	t_intersection_coef;
+
+typedef struct s_parallel_ray
+{
+	t_vec		cam_origin;
+	t_vec		direction;
+	t_cylinder	*cylin;
+	float		c;
+}	t_parallel_ray;
+
+typedef struct s_cylinder_coef
+{
+	t_vec		direction;
+	t_vec		oc;
+	t_vec		axis;
+	float		radius;
+}	t_cylinder_coef;
+
+typedef struct s_cylinder_calc
+{
+	t_coeef		coeef;
+	t_vec		oc;
+	float		disc;
+	float		intersect[2];
+}	t_cylinder_calc;
 
 // vector_cal_01.c
 float	vec3_dot(t_vec a, t_vec b);
@@ -154,7 +203,10 @@ t_color	trace(t_data *id, t_vec c_direction, t_sphere *shape, float t);
 t_vec	cal_normal(t_sphere *shape, t_vec hit);
 
 // cylinder
-bool	cylin_intersect(t_vec cam_origin, t_vec nmlize_direct, t_cylinder *cylin, float *t);
+bool	cylin_intersect(t_vec cam_origin, t_vec nmlize_direct,
+			t_cylinder *cylin, float *t);
+bool	find_closest_intersection(t_intersection_data *data, float *t);
+bool	is_within_height_bounds(t_vec point, t_cylinder *cylin);
 
 // shadow_check
 bool	in_shadow(t_data *id, t_hit point, t_light *light, float *t);
@@ -174,7 +226,6 @@ bool	check_light_node(t_light *light_node);
 bool	check_plane_node(t_plane *plane_node);
 bool	check_sphere_node(t_sphere *sphere_node);
 bool	check_cylinder_node(t_cylinder *cylin_node);
-
 
 //free
 void	free_success(t_data *id);

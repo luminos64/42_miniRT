@@ -20,10 +20,8 @@ t_color	trace_ray(t_data *id, t_camera *camera, t_vec c_direction)
 			hit = sp_intersect(camera->origin, c_direction, (t_sphere *)shape, &t);
 		else if (shape->type == PLANE)
 			hit = pl_intersect(camera->origin, c_direction, (t_plane *)shape, &t);
-			// else if (shape->type == CYLINDER)
-		// {
-		// 	hit = cylin_intersect(camera->origin, c_direction, (t_cylinder *)shape, &t);
-		// }
+		else if (shape->type == CYLINDER)
+			hit = cylin_intersect(camera->origin, c_direction, (t_cylinder *)shape, &t);
 		if (hit && t > 0 && t < closest_t)
 		{
 			closest_t = t;
