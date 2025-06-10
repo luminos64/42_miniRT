@@ -23,23 +23,20 @@ t_vec	cal_normal(t_sphere *shape, t_vec hit)
 	t_plane		*plane;
 	t_cylinder	*cylinder;
 
-	if (shape->type == SPHERE)
-	{
+	plane = NULL;
+	cylinder = NULL;
+	normal = (t_vec){0.0f, 0.0f, 0.0f};
+	if (shape && shape->type == SPHERE)
 		normal = vec3_normalize(vec3_sub(hit, shape->origin));
-	}
-	else if (shape->type == PLANE)
+	else if (shape && shape->type == PLANE)
 	{
 		plane = (t_plane *)shape;
 		normal = vec3_normalize(plane->normal);
 	}
-	else if (shape->type == CYLINDER)
+	else if (shape && shape->type == CYLINDER)
 	{
 		cylinder = (t_cylinder *)shape;
 		normal = calculate_cylinder_normal(cylinder, hit);
-	}
-	else
-	{
-		normal = (t_vec){0.0f, 1.0f, 0.0f};
 	}
 	return (normal);
 }

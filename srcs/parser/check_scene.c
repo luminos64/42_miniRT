@@ -48,7 +48,7 @@ bool	check_camera(t_data *id)
 {
 	if (!id || !id->camera)
 		return (false);
-	if (!check_direction(&id->camera->direction))
+	if (!check_direction(&id->camera->di))
 		return (false);
 	if (id->camera->fov < 0 || id->camera->fov > 180)
 		return (false);

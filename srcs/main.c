@@ -1,34 +1,40 @@
 #include "miniRT.h"
 
-t_color	trace_ray(t_data *id, t_camera *camera, t_vec c_direction)
+t_sphere	*find_s(t_sphere *shape, t_camera *cam, t_vec c_dir, float *close_t)
 {
 	bool		hit;
 	float		t;
-	float		closest_t;
-	t_color		color;
-	t_sphere	*shape;
 	t_sphere	*closest_shape;
 
-	hit = 0;
-	closest_t = __FLT_MAX__;
 	closest_shape = NULL;
-	color = id->bg;
-	shape = id->shape;
 	while (shape)
 	{
+		hit = false;
 		if (shape->type == SPHERE)
-			hit = sp_intersect(camera->origin, c_direction, (t_sphere *)shape, &t);
+			hit = sp_intersect(cam->origin, c_dir, (t_sphere *)shape, &t);
 		else if (shape->type == PLANE)
-			hit = pl_intersect(camera->origin, c_direction, (t_plane *)shape, &t);
+			hit = pl_intersect(cam->origin, c_dir, (t_plane *)shape, &t);
 		else if (shape->type == CYLINDER)
-			hit = cylin_intersect(camera->origin, c_direction, (t_cylinder *)shape, &t);
-		if (hit && t > 0 && t < closest_t)
+			hit = cylin_intersect(cam->origin, c_dir, (t_cylinder *)shape, &t);
+		if (hit && t > 0 && t < *close_t)
 		{
-			closest_t = t;
+			*close_t = t;
 			closest_shape = shape;
 		}
 		shape = shape->next;
 	}
+	return (closest_shape);
+}
+
+static t_color	trace_ray(t_data *id, t_camera *camera, t_vec c_direction)
+{
+	float		closest_t;
+	t_color		color;
+	t_sphere	*closest_shape;
+
+	closest_t = __FLT_MAX__;
+	color = id->bg;
+	closest_shape = find_s(id->shape, camera, c_direction, &closest_t);
 	if (closest_shape)
 		color = trace(id, c_direction, closest_shape, closest_t);
 	return (color);
@@ -87,60 +93,80 @@ t_color	trace_ray(t_data *id, t_camera *camera, t_vec c_direction)
  * ______________________________________*
  */
 
+static void	projection(t_data *id, int x, int y)
+{
+	t_color	col;
+	t_vec	c_dir;
+	float	fov;
+
+	y = 0;
+	while (y < WINY)
+	{
+		x = 0;
+		while (x < WINX)
+		{
+			fov = tan((id->camera->fov * 0.5) * (PI / 180));
+			c_dir.x = ((float)(x - (WINX / 2)) / WINX) * (2.0 - 1.0);
+			c_dir.x = c_dir.x * (WINX / WINY) * fov;
+			c_dir.y = (((float)(y - (WINY / 2)) / WINY) * (2.0 - 1.0)) * fov;
+			c_dir = vec3_add(id->camera->di, (t_vec){c_dir.x, c_dir.y, 0.0f});
+			c_dir = vec3_normalize(c_dir);
+			col = trace_ray(id, id->camera, c_dir);
+			mlx_put_pixel(id->img, x, y, ft_pixel(col.r, col.g, col.b, col.a));
+			x++;
+		}
+		y++;
+	}
+}
+
 void	render(void *param)
 {
 	t_data		*id;
-	t_color		color;
-	t_vec	c_direction;
 	int			i[2];
-	float		fov_scale;
 
 	id = (t_data *)param;
 	id->camera->origin.x += id->temp.x;
 	id->camera->origin.y += id->temp.y;
 	id->camera->origin.z += id->temp.z;
-	id->camera->direction.y += id->di.x;
-	// printf("o x %f	y %f	z %f		d y %f\n", id->camera->origin.x, id->camera->origin.y, id->camera->origin.z, id->camera->direction.y);
-	i[Y] = 0;
-	while (i[Y] < WINY)
+	id->camera->di.y += id->di.x;
+	if (id->img)
 	{
-		i[X] = 0;
-		while (i[X] < WINX)
-		{
-			fov_scale = tan((id->camera->fov * 0.5) * (PI / 180));
-			c_direction.x = (((float)(i[X] - (WINX / 2)) / WINX) * (2.0 - 1.0)) * (WINX / WINY) * fov_scale;
-			c_direction.y = (((float)(i[Y] - (WINY / 2)) / WINY) * (2.0 - 1.0)) * fov_scale;
-			c_direction = vec3_normalize(vec3_add(id->camera->direction,(t_vec){c_direction.x, c_direction.y, 0}));
-			color = trace_ray(id, id->camera, c_direction);
-			mlx_put_pixel(id->img, i[X], i[Y], ft_pixel(color.r, color.g, color.b, color.a));
-			i[X]++;
-		}
-		i[Y]++;
+		mlx_delete_image(id->mlx, id->img);
+		id->img = NULL;
 	}
+	id->img = mlx_new_image(id->mlx, WINX, WINY);
+	if (!id->img)
+		return ;
+	projection(id, i[X], i[Y]);
+	if (mlx_image_to_window(id->mlx, id->img, 0, 0) < 0)
+		return ;
+	id->img->instances->z = 0;
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data id;
+	t_data	id;
 
 	if (ac != 2)
 		return (EXIT_FAILURE);
-	init_data(&id);
-	parser(&id, av);
-	display_info(&id);
-	id.mlx = mlx_init(WINX, WINY, "miniRT", false); // true => can resize
+	id.mlx = NULL;
+	id.mlx = mlx_init(WINX, WINY, "miniRT", false);
 	if (!id.mlx)
 		return (EXIT_FAILURE);
+	id.b_texture = NULL;
 	id.img = NULL;
-	id.img = mlx_new_image(id.mlx, WINX, WINY);
-	if (!id.img)
+	id.status_bar = NULL;
+	if (!init_data(&id))
 		return (EXIT_FAILURE);
-	// render(&id);
-	if (mlx_image_to_window(id.mlx, id.img, 0, 0) < 0)
-		return (EXIT_FAILURE);
+	parser(&id, av);
+	display_info(&id);
 	mlx_loop_hook(id.mlx, &render, &id);
 	mlx_key_hook(id.mlx, &hook, &id);
+	status_bar(&id);
 	mlx_loop(id.mlx);
+	mlx_delete_texture(id.b_texture);
+	mlx_delete_image(id.mlx, id.img);
+	mlx_delete_image(id.mlx, id.status_bar);
 	mlx_terminate(id.mlx);
 	free_success(&id);
 	return (EXIT_SUCCESS);

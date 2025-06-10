@@ -26,9 +26,9 @@ int	assign_camera(t_data *id, char **split_line)
 	id->camera->origin.x = ft_atof(split_line[1]);
 	id->camera->origin.y = ft_atof(split_line[2]);
 	id->camera->origin.z = ft_atof(split_line[3]);
-	id->camera->direction.x = ft_atof(split_line[4]);
-	id->camera->direction.y = ft_atof(split_line[5]);
-	id->camera->direction.z = ft_atof(split_line[6]);
+	id->camera->di.x = ft_atof(split_line[4]);
+	id->camera->di.y = ft_atof(split_line[5]);
+	id->camera->di.z = ft_atof(split_line[6]);
 	id->camera->fov = ft_atof(split_line[7]);
 	if (!check_camera(id))
 		return (0);

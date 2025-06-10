@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-void	init_data(t_data *id)
+bool	init_data(t_data *id)
 {
 	id->ambient = NULL;
 	id->camera = NULL;
@@ -8,16 +8,25 @@ void	init_data(t_data *id)
 	id->plane = NULL;
 	id->shape = NULL;
 	id->cylynder = NULL;
+	id->checker_board = false;
+	id->bump_map = false;
 	id->bg.r = 0;
 	id->bg.g = 0;
 	id->bg.b = 0;
 	id->bg.a = 255;
+	id->b_texture = mlx_load_png("./texture/brick.png");
+	if (!id->b_texture)
+	{
+		mlx_terminate(id->mlx);
+		return (false);
+	}
 	id->temp.x = 0;
 	id->temp.y = 0;
 	id->temp.z = 0;
 	id->di.x = 0;
 	id->di.y = 0;
 	id->di.z = 0;
+	return (true);
 }
 
 bool	ft_isspace(char c)
@@ -43,7 +52,7 @@ bool	ft_isspace_line(char *line)
 bool	is_skippable_line(char *line)
 {
 	return (line[0] == '\n' || line[0] == '\0' || ft_isspace_line(line)
-	|| line[0] == '#');
+		|| line[0] == '#');
 }
 
 char	*get_next_valid_line(int fd)
@@ -60,7 +69,7 @@ char	*get_next_valid_line(int fd)
 }
 
 //TODO Comment this out when submit the work
-void display_info(t_data *id)
+void	display_info(t_data *id)
 {
 	t_light		*curr_light = id->light;
 	t_sphere	*curr_shape = id->shape;
@@ -88,9 +97,9 @@ void display_info(t_data *id)
 		printf("Origin.x: %.2f\n", id->camera->origin.x);
 		printf("Origin.y: %.2f\n", id->camera->origin.y);
 		printf("Origin.z: %.2f\n", id->camera->origin.z);
-		printf("Direction.x: %.2f\n", id->camera->direction.x);
-		printf("Direction.y: %.2f\n", id->camera->direction.y);
-		printf("Direction.z: %.2f\n", id->camera->direction.z);
+		printf("Direction.x: %.2f\n", id->camera->di.x);
+		printf("Direction.y: %.2f\n", id->camera->di.y);
+		printf("Direction.z: %.2f\n", id->camera->di.z);
 		printf("FOV: %.2f\n", id->camera->fov);
 	}
 	else

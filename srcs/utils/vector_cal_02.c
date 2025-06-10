@@ -1,4 +1,3 @@
-
 #include "miniRT.h"
 
 t_vec	color_mul(t_vec color, t_vec mul)

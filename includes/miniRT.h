@@ -47,7 +47,7 @@ typedef struct s_camera
 {
 	float		fov; // view in degrees [70, 110]
 	t_vec		origin;
-	t_vec		direction; // x, y, z [-1 , 1]
+	t_vec		di; // x, y, z [-1 , 1]
 }	t_camera;
 
 typedef struct s_coeef
@@ -102,6 +102,7 @@ typedef struct s_intersection_data
 	float		t1;
 	float		t2;
 }	t_intersection_data;
+
 typedef struct s_valid_intersections
 {
 	bool	t1_valid;
@@ -109,6 +110,7 @@ typedef struct s_valid_intersections
 	float	t1;
 	float	t2;
 }	t_valid_intersections;
+
 typedef struct s_hit
 {
 	t_sphere	*hit_shape;
@@ -120,17 +122,21 @@ typedef struct s_hit
 
 typedef struct s_data
 {
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	t_light_a	*ambient;
-	t_camera	*camera;
-	t_color		bg;
-	t_sphere	*shape;
-	t_light		*light;
-	t_plane		*plane;
-	t_cylinder	*cylynder;
-	t_vec		temp;
-	t_vec		di;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	mlx_image_t		*status_bar;
+	mlx_texture_t	*b_texture;
+	t_light_a		*ambient;
+	t_camera		*camera;
+	t_color			bg;
+	t_sphere		*shape;
+	t_light			*light;
+	t_plane			*plane;
+	t_cylinder		*cylynder;
+	bool			checker_board;
+	bool			bump_map;
+	t_vec			temp;
+	t_vec			di;
 }	t_data;
 
 typedef struct s_intersection_coef
@@ -181,7 +187,7 @@ float	clamp(float value, float min, float max);
 int		ft_pixel(int r, int g, int b, int a);
 
 // utils.c
-void	init_data(t_data *id);
+bool	init_data(t_data *id);
 bool	ft_isspace(char c);
 bool	ft_isspace_line(char *line);
 bool	is_skippable_line(char *line);
@@ -189,12 +195,15 @@ char	*get_next_valid_line(int fd);
 
 // key_hook.c
 void	hook(mlx_key_data_t key, void *param);
+void	status_bar(t_data *id);
 
 // sphere.c
 bool	sp_intersect(t_vec origin, t_vec direction, t_sphere *shape, float *t);
+void	sphere_uv(t_hit hit, float *u, float *v);
 
 // plane.c
 bool	pl_intersect(t_vec origin, t_vec direction, t_plane *plane, float *t);
+void	plane_uv(t_hit hit, float *u, float *v);
 
 // trace_light.c
 t_color	trace(t_data *id, t_vec c_direction, t_sphere *shape, float t);
@@ -209,7 +218,12 @@ bool	find_closest_intersection(t_intersection_data *data, float *t);
 bool	is_within_height_bounds(t_vec point, t_cylinder *cylin);
 
 // shadow_check
-bool	in_shadow(t_data *id, t_hit point, t_light *light, float *t);
+bool	in_shadow(t_data *id, t_hit point, t_light *light);
+
+// texture
+t_vec	procedural_ckeckerboard(float u, float v, int scale);
+void	clamp_uv(float *u, float *v);
+t_vec	bump_mapping(t_data *id, float u, float v, t_hit hit);
 
 //parser
 void	parser(t_data *data, char **av);
