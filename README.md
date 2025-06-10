@@ -62,3 +62,12 @@ In progress
 ![Screenshot](img/2025-05-06%2001-11-51.png)
 
 ![Screenshot](img/2025-05-29%2019-16-15.png)
+
+normal
+![Screenshot](img/2025-06-08%2022-49-55.png)
+
+checkerboard
+![Screenshot](img/2025-06-08%2022-51-27.png)
+
+bump map
+![Screenshot](img/2025-06-08%2022-51-20.png)
