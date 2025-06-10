@@ -212,7 +212,7 @@ bool	is_within_height_bounds(t_vec point, t_cylinder *cylin);
 bool	in_shadow(t_data *id, t_hit point, t_light *light, float *t);
 
 //parser
-void	parser(t_data *data);
+void	parser(t_data *data, char **av);
 
 //checker scene
 bool	check_argument(char **split_line, int limit);

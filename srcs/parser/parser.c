@@ -71,7 +71,7 @@ static bool	is_all_num(char **split_line)
 	return (true);
 }
 
-void	parser(t_data *id)
+void	parser(t_data *id, char **av)
 {
 	int		fd;
 	int		amb_count;
@@ -81,9 +81,7 @@ void	parser(t_data *id)
 
 	amb_count = 0;
 	cam_count = 0;
-	fd = open("./map/cylin.rt", O_RDONLY);
-	// fd = open("./map/data3_snowman.rt", O_RDONLY);
-	// fd = open("./map/cylin.rt", O_RDONLY);
+	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);
 	line = get_next_valid_line(fd);

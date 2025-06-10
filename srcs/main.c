@@ -119,12 +119,14 @@ void	render(void *param)
 	}
 }
 
-int main()
+int main(int ac, char **av)
 {
 	t_data id;
 
+	if (ac != 2)
+		return (EXIT_FAILURE);
 	init_data(&id);
-	parser(&id);
+	parser(&id, av);
 	display_info(&id);
 	id.mlx = mlx_init(WINX, WINY, "miniRT", false); // true => can resize
 	if (!id.mlx)

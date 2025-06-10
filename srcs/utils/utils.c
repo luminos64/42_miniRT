@@ -12,6 +12,12 @@ void	init_data(t_data *id)
 	id->bg.g = 0;
 	id->bg.b = 0;
 	id->bg.a = 255;
+	id->temp.x = 0;
+	id->temp.y = 0;
+	id->temp.z = 0;
+	id->di.x = 0;
+	id->di.y = 0;
+	id->di.z = 0;
 }
 
 bool	ft_isspace(char c)
