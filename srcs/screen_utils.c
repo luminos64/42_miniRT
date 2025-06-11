@@ -1,25 +1,4 @@
-
 #include "miniRT.h"
-
-static void	camera_adj(mlx_key_data_t key, t_data *id)
-{
-	if (key.key == MLX_KEY_LEFT)
-		id->temp.x -= 0.1;
-	if (key.key == MLX_KEY_RIGHT)
-		id->temp.x += 0.1;
-	if (key.key == MLX_KEY_UP)
-		id->temp.y -= 0.1;
-	if (key.key == MLX_KEY_DOWN)
-		id->temp.y += 0.1;
-	if (key.key == MLX_KEY_Q)
-		id->temp.z += 0.1;
-	if (key.key == MLX_KEY_W)
-		id->temp.z -= 0.1;
-	if (key.key == MLX_KEY_A)
-		id->di.x += 0.01;
-	if (key.key == MLX_KEY_S)
-		id->di.x -= 0.01;
-}
 
 void	hook(mlx_key_data_t key, void *param)
 {
@@ -40,7 +19,6 @@ void	hook(mlx_key_data_t key, void *param)
 		id->checker_board = (id->checker_board + 1) % 2;
 	if (key.key == MLX_KEY_B && key.action == MLX_PRESS)
 		id->bump_map = (id->bump_map + 1) % 2;
-	camera_adj(key, id);
 }
 
 void	status_bar(t_data *id)

@@ -70,13 +70,12 @@ static bool	is_all_num(char **split_line)
 void	parser(t_data *id, char **av)
 {
 	int		fd;
-	int		amb_count;
-	int		cam_count;
+	int		amb_cam[2];
 	char	**split_line;
 	char	*line;
 
-	amb_count = 0;
-	cam_count = 0;
+	amb_cam[0] = 0;
+	amb_cam[1] = 0;
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		exit (EXIT_FAILURE);
@@ -87,12 +86,12 @@ void	parser(t_data *id, char **av)
 		free(line);
 		if (!split_line || !is_all_num(split_line))
 			ft_free_exit(split_line, id, fd, "Error");
-		if (!check_and_assign(split_line, id, &amb_count, &cam_count))
+		if (!check_and_assign(split_line, id, &amb_cam[0], &amb_cam[1]))
 			ft_free_exit(split_line, id, fd, "Error");
 		ft_doublefree(split_line);
 		line = get_next_valid_line(fd);
 	}
-	if (amb_count == 0 || cam_count == 0)
+	if (amb_cam[0] == 0 || amb_cam[1] == 0)
 		ft_free_exit(NULL, id, fd, "Error");
 	close(fd);
 }

@@ -20,12 +20,6 @@ bool	init_data(t_data *id)
 		mlx_terminate(id->mlx);
 		return (false);
 	}
-	id->temp.x = 0;
-	id->temp.y = 0;
-	id->temp.z = 0;
-	id->di.x = 0;
-	id->di.y = 0;
-	id->di.z = 0;
 	return (true);
 }
 
@@ -67,8 +61,7 @@ char	*get_next_valid_line(int fd)
 	}
 	return (line);
 }
-
-//TODO Comment this out when submit the work
+/*
 void	display_info(t_data *id)
 {
 	t_light		*curr_light = id->light;
@@ -180,3 +173,4 @@ void	display_info(t_data *id)
 	if (!cylinder_found)
 		printf("\nNo Cylinder found\n");
 }
+*/

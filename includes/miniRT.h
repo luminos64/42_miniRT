@@ -135,8 +135,6 @@ typedef struct s_data
 	t_cylinder		*cylynder;
 	bool			checker_board;
 	bool			bump_map;
-	t_vec			temp;
-	t_vec			di;
 }	t_data;
 
 typedef struct s_intersection_coef
@@ -266,7 +264,6 @@ void	addback_plane_node(t_data *id, t_plane *new_node);
 void	addback_sphere_node(t_data *id, t_sphere *new_node);
 void	addback_cylin_node(t_data *id, t_cylinder *new_node);
 
-//TODO comment this out later
 void	display_info(t_data *id);
 
 #endif

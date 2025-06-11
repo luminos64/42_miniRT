@@ -40,59 +40,6 @@ static t_color	trace_ray(t_data *id, t_camera *camera, t_vec c_direction)
 	return (color);
 }
 
-/**_________________________________________________________
- *                                                         *
- *                           Y-axis                        *
- *        |------------------------------------------|     *
- *        |                   [-]                    |     *
- *        |                    |                     |     *
- *        |                    |                     |     *
- *        |__________________________________________|_____*__
- *        |                    |                     |     * |
- * X-axit |[-] . . . . . . . .[0]. . . . . . . . .[+]|     * |
- *        |                    |                     |     * |==> plane
- *        |                    |                     |     * |
- *        |                   [+]                    |     * |
- *        |------------------------------------------|_____*_|
- *                                                         *
- * ________________________________________________________*
- */
-
-/**________________________________________________
- *                                                 *
- *                  Y-axis                         *
- *                                                 *
- *                   [-]                           *
- *                    |                            *
- *           c.len    |                            *
- *    CAM +-----------|------------> Z-axis [+]    *
- *  (Thera = FOV)     |                            *
- *                    |                            *
- *                   [+]                           *
- *                       [-]<-- Z-axis --->[+]     *
- *                                                 *
- *    1.0f / C.len = cotangent( Fov / 2 )          *
- * ________________________________________________*
- */
-
-/**_______________________________________
- *                                       *
- *    CAM [.]      [-]                   *
- *  cam direction   .  plane             *
- *          \       .    |               *
- *           \      .    |               *
- *            \     .    |               *
- *             \    .    |               *
- *       _______\__obj___|___  plane     *
- *                  .                    *
- *                 [0]                   *
- *  [-]<-------- Z-axis -------->[+]     *
- *                  .                    *
- *                 [+]                   *
- *               Y-axis                  *
- * ______________________________________*
- */
-
 static void	projection(t_data *id, int x, int y)
 {
 	t_color	col;
@@ -125,10 +72,6 @@ void	render(void *param)
 	int			i[2];
 
 	id = (t_data *)param;
-	id->camera->origin.x += id->temp.x;
-	id->camera->origin.y += id->temp.y;
-	id->camera->origin.z += id->temp.z;
-	id->camera->di.y += id->di.x;
 	if (id->img)
 	{
 		mlx_delete_image(id->mlx, id->img);
@@ -147,19 +90,18 @@ int	main(int ac, char **av)
 {
 	t_data	id;
 
-	if (ac != 2)
-		return (EXIT_FAILURE);
-	id.mlx = NULL;
-	id.mlx = mlx_init(WINX, WINY, "miniRT", false);
-	if (!id.mlx)
+	if (ac != 2 || ft_strncmp(".rt", &av[1][ft_strlen(av[1]) - 3], 3))
 		return (EXIT_FAILURE);
 	id.b_texture = NULL;
 	id.img = NULL;
 	id.status_bar = NULL;
+	id.mlx = NULL;
 	if (!init_data(&id))
 		return (EXIT_FAILURE);
 	parser(&id, av);
-	display_info(&id);
+	id.mlx = mlx_init(WINX, WINY, "miniRT", false);
+	if (!id.mlx)
+		return (EXIT_FAILURE);
 	mlx_loop_hook(id.mlx, &render, &id);
 	mlx_key_hook(id.mlx, &hook, &id);
 	status_bar(&id);
