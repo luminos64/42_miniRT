@@ -7,7 +7,8 @@ bool	is_within_height_bounds(t_vec point, t_cylinder *cylin)
 
 	to_point = vec3_sub(point, cylin->origin);
 	projection = vec3_dot(to_point, cylin->normal);
-	return (projection >= 0.0f && projection <= cylin->height);
+	return (projection >= -cylin->height * 0.5f
+		&& projection <= cylin->height * 0.5f);
 }
 
 static t_vec	calculate_hit_point(t_vec cam_origin, t_vec direction, float t)

@@ -9,7 +9,7 @@ bool	check_argument(char **split_line, int limit)
 		return (false);
 	while (split_line[count])
 		count++;
-	if (count > limit)
+	if (count != limit)
 		return (false);
 	return (true);
 }
@@ -23,7 +23,6 @@ bool	check_color(t_vec *color)
 	return (true);
 }
 
-//Direction is Normalized in this code
 bool	check_direction(t_vec *direction)
 {
 	if (direction->x < -1 || direction->y < -1 || direction->z < -1)
