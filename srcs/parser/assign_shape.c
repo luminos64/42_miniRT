@@ -4,7 +4,7 @@ int	assign_plane(t_data *id, char **split_line)
 {
 	t_plane	*plane_node;
 
-	if (!check_argument(split_line, 10))
+	if (!check_argument(split_line, 10) || !check_color_values(split_line, 7))
 		return (0);
 	plane_node = malloc(sizeof(t_plane));
 	if (!plane_node)
@@ -35,6 +35,8 @@ int	assign_sphere(t_data *id, char **split_line)
 
 	if (!check_argument(split_line, 8))
 		return (0);
+	if (!check_color_values(split_line, 5))
+		return (0);
 	sphere_node = malloc(sizeof(t_sphere));
 	if (!sphere_node)
 		return (0);
@@ -60,7 +62,7 @@ int	assign_cylinder(t_data *id, char **split_line)
 {
 	t_cylinder	*cylin_node;
 
-	if (!check_argument(split_line, 12))
+	if (!check_argument(split_line, 12) || !check_color_values(split_line, 9))
 		return (0);
 	cylin_node = malloc(sizeof(t_cylinder));
 	cylin_node->type = CYLINDER;

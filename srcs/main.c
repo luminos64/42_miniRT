@@ -99,6 +99,7 @@ int	main(int ac, char **av)
 	if (!init_data(&id))
 		return (EXIT_FAILURE);
 	parser(&id, av);
+	id.b_texture = mlx_load_png("./texture/brick.png");
 	id.mlx = mlx_init(WINX, WINY, "miniRT", false);
 	if (!id.mlx)
 		return (EXIT_FAILURE);

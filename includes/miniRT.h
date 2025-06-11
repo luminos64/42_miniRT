@@ -225,6 +225,8 @@ t_vec	bump_mapping(t_data *id, float u, float v, t_hit hit);
 
 //parser
 void	parser(t_data *data, char **av);
+int		check_color_values(char **split_line, int start_idx);
+int		has_decimal_point(const char *str);
 
 //checker scene
 bool	check_argument(char **split_line, int limit);

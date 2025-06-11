@@ -59,6 +59,11 @@ static void	cal_uv(t_sphere *shape, t_hit hit, float *u, float *v)
 		sphere_uv(hit, u, v);
 	else if (shape->type == PLANE)
 		plane_uv(hit, u, v);
+	else
+	{
+		*u = 0;
+		*v = 0;
+	}
 }
 
 t_color	trace(t_data *id, t_vec c_direction, t_sphere *shape, float t)

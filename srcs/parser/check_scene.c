@@ -18,7 +18,7 @@ bool	check_color(t_vec *color)
 {
 	if (color->x < 0 || color->y < 0 || color->z < 0)
 		return (false);
-	if (color->x > 256 || color->y > 256 || color->z > 256)
+	if (color->x > 1 || color->y > 1 || color->z > 1)
 		return (false);
 	return (true);
 }
