@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   miniRT.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/11 21:13:43 by nchencha          #+#    #+#             */
+/*   Updated: 2025/06/11 21:13:45 by nchencha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -39,15 +51,15 @@ typedef struct s_color
 
 typedef struct s_light_a
 {
-	float		intens; // [0.0, 1.0]
-	t_vec		color; // r, g, b [0.0, 1.0]
+	float		intens;
+	t_vec		color;
 }	t_light_a;
 
 typedef struct s_camera
 {
-	float		fov; // view in degrees [70, 110]
+	float		fov;
 	t_vec		origin;
-	t_vec		di; // x, y, z [-1 , 1]
+	t_vec		di;
 }	t_camera;
 
 typedef struct s_coeef
@@ -61,15 +73,15 @@ typedef struct s_light
 {
 	struct s_light	*next;
 	t_vec			origin;
-	float			bright; // [0.0, 1.0]
-	t_vec			color; // r, g, b [0.0, 1.0]
+	float			bright;
+	t_vec			color;
 }	t_light;
 
 typedef struct s_sphere
 {
 	void		*next;
 	int			type;
-	t_vec		color; // r, g, b [0, 255]
+	t_vec		color;
 	t_vec		origin;
 	float		radius;
 }	t_sphere;
@@ -78,18 +90,18 @@ typedef struct s_plane
 {
 	void		*next;
 	int			type;
-	t_vec		color; // r, g, b [0, 255]
+	t_vec		color;
 	t_vec		origin;
-	t_vec		normal; // x, y, z [-1 , 1]
+	t_vec		normal;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	void		*next;
 	int			type;
-	t_vec		color; // r, g, b [0, 255]
+	t_vec		color;
 	t_vec		origin;
-	t_vec		normal; // x, y, z [-1 , 1]
+	t_vec		normal;
 	float		diameter;
 	float		height;
 }	t_cylinder;
