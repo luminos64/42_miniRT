@@ -14,12 +14,7 @@ bool	init_data(t_data *id)
 	id->bg.g = 0;
 	id->bg.b = 0;
 	id->bg.a = 255;
-	id->b_texture = mlx_load_png("./texture/brick.png");
-	if (!id->b_texture)
-	{
-		mlx_terminate(id->mlx);
-		return (false);
-	}
+	id->b_texture = NULL;
 	return (true);
 }
 

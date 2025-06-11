@@ -4,6 +4,8 @@ int	assign_ambient(t_data *id, char **split_line)
 {
 	if (!check_argument(split_line, 5))
 		return (0);
+	if (!check_color_values(split_line, 2))
+		return (0);
 	id->ambient = malloc(sizeof(t_light_a));
 	if (!id->ambient)
 		return (0);
@@ -57,6 +59,8 @@ int	assign_light(t_data *id, char **split_line)
 	t_light	*light_node;
 
 	if (!check_argument(split_line, 8))
+		return (0);
+	if (!check_color_values(split_line, 5))
 		return (0);
 	light_node = malloc(sizeof(t_light));
 	if (!light_node)
