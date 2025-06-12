@@ -78,7 +78,7 @@ Ray(t) = Origin + t * Direction
    - Dot product, cross product, normalization
    - Vector length calculation
 
-3. **Create basic ray casting**
+3. **Create basic ray tracing**
    - Generate rays from camera through pixels
    - Implement camera model with field of view
 
