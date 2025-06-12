@@ -149,19 +149,77 @@ bool	pl_intersect(t_vec ori, t_vec direction, t_plane *plane, float *t)
 - **Radius**: Scalar r
 - **Height**: Scalar h
 
-```c
-|(P - C) - ((P - C)·A)A|² = r²
+|(P - C) - ((P - C)·A)A|² = r² สมการนี้คือ จุดไหนที่ห่างจากแกนกลางเป็นระยะ r = อยู่บนผิวทรงกระบอก
 
+P = จุดใดๆ บนผิวทรงกระบอก
+C = จุดศูนย์กลางของทรงกระบอก (บนแกน)
+A = เวกเตอร์หน่วยของแกนทรงกระบอก
+r = รัศมีของทรงกระบอก
+· = (dot product)
+| | = ขนาดของเวกเตอร์
+
+- (P - C) - เวกเตอร์จากจุดศูนย์กลางไปยังจุด P
+- ((P - C)·A)A - การฉายเวกเตอร์ (P - C) ลงบนแกน A = ส่วนประกอบที่ขนานกับแกน
+- (P - C) - ((P - C)·A)A - เอาเวกเตอร์เต็ม - ส่วนที่ขนานกับแกน = ส่วนประกอบที่ตั้งฉากกับแกน
+
+```c
+- Full version explaination
+```c
+//คำนวณจุดตัดสองจุดเมื่อแสงชนทรงกระบอก 
+static void	calculate_intersection_points(t_intersection_coef *coef)
+{
+	float	sqrt_discriminant;
+
+	sqrt_discriminant = sqrtf(coef->discriminant);
+	*(coef->t1) = (-coef->b - sqrt_discriminant) / (2.0f * coef->a);
+	*(coef->t2) = (-coef->b + sqrt_discriminant) / (2.0f * coef->a);
+}
+//จัดการแสงขนาน
+static bool	handle_parallel_ray(t_parallel_ray *ray, float *t)
+{
+	t_vec	hit_point;
+
+	if (ray->c > 0)
+		return (false);
+	hit_point = vec3_add(ray->cam_origin, vec3_mul(ray->direction, 0.001f));
+	if (is_within_height_bounds(hit_point, ray->cylin))
+	{
+		// ฉายจุดลงบนแกนทรงกระบอก
+   	 	// เช็คว่าการฉายอยู่ในช่วง [0, ความสูง] หรือไม่
+    	// return true ถ้าอยู่ในขอบเขต
+		*t = 0.001f;
+		return (true);
+	}
+	//จัดการกรณีพิเศษที่แสงขนานกับแกนของทรงกระบอก (เมื่อค่าสัมประสิทธิ์ 'a' ใกล้ศูนย์)
+	return (false);
+}
+// คำนวณค่าสัมประสิทธิ์ (a, b, c) สำหรับสมการกำลังสองที่กำหนดการตัดกันของแสงกับทรงกระบอก
+static void	calculate_cylinder_coefficients(t_cylinder_coef *coef,
+	t_coeef *coeef)
+{
+	t_vec	d_perp;
+	t_vec	oc_perp;
+
+	//ตั้งฉากของทิศทางแสงและเวกเตอร์จากจุดเริ่มต้นไปยังจุดศูนย์กลาง
+	d_perp = vec3_sub(coef->direction,
+			vec3_mul(coef->axis, vec3_dot(coef->direction, coef->axis)));
+	oc_perp = vec3_sub(coef->oc,
+			vec3_mul(coef->axis, vec3_dot(coef->oc, coef->axis)));
+	coeef->a = vec3_dot(d_perp, d_perp);
+	coeef->b = 2.0f * vec3_dot(oc_perp, d_perp);
+	coeef->c = vec3_dot(oc_perp, oc_perp) - (coef->radius * coef->radius);
+}
+//กำหนดว่าแสงตัดกับทรงกระบอกหรือไม่ และคืนค่าระยะห่างของจุดตัด
 bool	cylin_intersect(t_vec cam_origin, t_vec direction,
 	t_cylinder *cylin, float *t)
 {
-	t_cylinder_calc		calc; // เก็บผลลัพธ์การคำนวณ (oc, สัมประสิทธิ์, discriminant, จุดตัด)
-	t_cylinder_coef		cyl_coef; //เก็บข้อมูลทรงกระบอก (direction, oc, axis, radius)
-	t_parallel_ray		ray; // สัมประสิทธิ์สำหรับหาจุดตัด
+	t_cylinder_calc		calc;
+	t_cylinder_coef		cyl_coef;
+	t_parallel_ray		ray;
 	t_intersection_coef	int_coef;
 	t_intersection_data	data;
 
-	calc.oc = vec3_sub(cam_origin, cylin->origin); //เวกเตอร์จากตำแหน่งกล้องไปศูนย์กลางทรงกระบอก
+	calc.oc = vec3_sub(cam_origin, cylin->origin);
 	cyl_coef = (t_cylinder_coef){direction, calc.oc,
 		vec3_normalize(cylin->normal), cylin->diameter / 2.0f};
 	calculate_cylinder_coefficients(&cyl_coef, &calc.coeef);
@@ -181,6 +239,9 @@ bool	cylin_intersect(t_vec cam_origin, t_vec direction,
 	calculate_intersection_points(&int_coef);
 	data = (t_intersection_data){cam_origin, direction, cylin,
 		calc.intersect[0], calc.intersect[1]};
+	//  t1 = ระยะห่างไปยังจุดตัดแรก (ใกล้กล้องที่สุด)
+	//	t2 = ระยะห่างไปยังจุดตัดที่สอง (ไกลกล้องมากกว่า)
+	//	ใช้สำหรับ ray tracing เพื่อทราบว่าแสงชนวัตถุที่จุดไหนก่อน
 	return (find_closest_intersection(&data, t));
 }
 ```
